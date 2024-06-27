@@ -1,0 +1,5 @@
+labio @ git+https://github.com/ZofTG/labio.git
+openpyxl
+scikit-learn
+matplotlib
+plotly
