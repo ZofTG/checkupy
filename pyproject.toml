@@ -1,15 +1,9 @@
 [build-system]
-requires = [
-    "pandas",
-    "openpyxl",
-    "scikit-learn",
-    "setuptools",
-    "wheel",
-]
+requires = []
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "labanalysis"
+name = "pyakern"
 authors = [{ name="Luca Zoffoli", email="lzoffoli@technogym.com" }]
 description = "A small package to simplify data processing in python."
 requires-python = ">=3.10"
@@ -18,7 +12,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-version = "10"
+version = "1"
 dynamic = ["readme", "dependencies"]
 
 [tool.setuptools.dynamic]
@@ -26,5 +20,5 @@ dependencies = {file = ["requirements.txt"]}
 readme = {file = "README.md"}
 
 [project.urls]
-"Homepage" = "https://github.com/ZofTG/labanalysis"
-"Bug Tracker" = "https://github.com/ZofTG/labanalysis/issues"
+"Homepage" = "https://github.com/ZofTG/pyakern"
+"Bug Tracker" = "https://github.com/ZofTG/pyakern/issues"
