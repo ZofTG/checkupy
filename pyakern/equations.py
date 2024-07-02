@@ -498,6 +498,12 @@ class BIAMeasure:
         """return the user BMI"""
         return self.weight / (self.height / 100) ** 2
 
+    def _correct_for_obese(self, ffm: float):
+        """correction for obesity"""
+        if self.bmi >= 30:
+            return ffm - 0.256 * (self.bmi - 30)
+        return ffm
+
     @property
     def ffm_std(self):
         """return the free-fat mass in kg and as percentage
@@ -512,8 +518,7 @@ class BIAMeasure:
             + 7.827 * self.is_male()
             + 0.2157 * self.height
         )
-        if self.bmi >= 30:
-            ffm -= 0.256 * (self.bmi - 30)
+        ffm = self._correct_for_obese(ffm)
         return ffm, ffm / self.weight
         # lst_kg, lst_pr = self.lst_std
         # bmc_kg, bmc_pr = self.bmc
@@ -523,21 +528,22 @@ class BIAMeasure:
     def ffm_atl(self):
         """return the free-fat mass in kg and as percentage
         of the total body weight"""
-        # if any(self._nones(self.right_body_r)):
-        #    return None, None
-        # ffm = float(
-        #    -2.261
-        #    + 0.327 * self.height**2 / self.right_body_r  # type: ignore
-        #    + 0.525 * self.weight
-        #    + 5.462 * self.is_male()
-        # )
-        ffm = (  # campa et al 2023
-            -7.729
-            + 0.686 * self.weight
-            + 1 / 0.227 * (self.height / 100) ** 2 / self.right_body_r  # type: ignore
-            + 0.086 * self.right_body_x  # type: ignore
-            + 0.058 * self.age
+        if any(self._nones(self.right_body_r)):
+            return None, None
+        ffm = float(  # Mathias et al. 2021
+            -2.261
+            + 0.327 * self.height**2 / self.right_body_r  # type: ignore
+            + 0.525 * self.weight
+            + 5.462 * self.is_male()
         )
+        # ffm = (  # campa et al 2023
+        #     -7.729
+        #     + 0.686 * self.weight
+        #     + 1 / 0.227 * (self.height / 100) ** 2 / self.right_body_r  # type: ignore
+        #     + 0.086 * self.right_body_x  # type: ignore
+        #     + 0.058 * self.age
+        # )
+        ffm = self._correct_for_obese(ffm)
         return ffm, ffm / self.weight
 
     @property
