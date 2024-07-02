@@ -6,6 +6,8 @@
 from math import atan, pi, exp, log
 from typing import Literal
 
+from .corrections import right_body_r_ohm
+
 
 #! FUNCTIONS
 
@@ -521,13 +523,20 @@ class BIAMeasure:
     def ffm_atl(self):
         """return the free-fat mass in kg and as percentage
         of the total body weight"""
-        if any(self._nones(self.right_body_r)):
-            return None, None
-        ffm = float(
-            -2.261
-            + 0.327 * self.height**2 / self.right_body_r  # type: ignore
-            + 0.525 * self.weight
-            + 5.462 * self.is_male()
+        # if any(self._nones(self.right_body_r)):
+        #    return None, None
+        # ffm = float(
+        #    -2.261
+        #    + 0.327 * self.height**2 / self.right_body_r  # type: ignore
+        #    + 0.525 * self.weight
+        #    + 5.462 * self.is_male()
+        # )
+        ffm = (  # campa et al 2023
+            -7.729
+            + 0.686 * self.weight
+            + 1 / 0.227 * (self.height / 100) ** 2 / self.right_body_r  # type: ignore
+            + 0.086 * self.right_body_x  # type: ignore
+            + 0.058 * self.age
         )
         return ffm, ffm / self.weight
 
