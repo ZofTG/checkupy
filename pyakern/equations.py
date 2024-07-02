@@ -510,11 +510,11 @@ class BIAMeasure:
         of the total body weight"""
         if any(self._nones(self.right_body_r, self.right_body_x)):
             return None, None
-        ffm = float(
+        ffm = float(  # kanellakis
             +12.299
-            - 0.116 * self.right_body_r / (self.height / 100) ** 2  # type: ignore
+            - 0.116 * self.right_body_r / (self.height / 100)  # type: ignore
             + 0.164 * self.weight
-            + 0.365 * self.right_body_x / (self.height / 100) ** 2  # type: ignore
+            + 0.365 * self.right_body_x / (self.height / 100)  # type: ignore
             + 7.827 * self.is_male()
             + 0.2157 * self.height
         )
