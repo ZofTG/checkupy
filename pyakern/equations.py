@@ -494,7 +494,7 @@ class BIAMeasure:
     @property
     def bmi(self):
         """return the user BMI"""
-        return self.weight / (self.height / 100)
+        return self.weight / (self.height / 100) ** 2
 
     @property
     def ffm_std(self):
@@ -717,6 +717,21 @@ class BIAMeasure:
         #     + 0.717 * self.is_male()
         # )
         # lst = upper_body + lower_body
+        return lst, lst / self.weight
+
+    @property
+    def lst_atl(self):
+        """return the lean soft tissue in kg and as percentage of the user
+        body weight"""
+        if any(self._nones(self.right_body_r, self.right_body_x)):
+            return None, None
+        lst = (  # Campa et al. 2023
+            -8.929
+            + 0.635 * self.weight
+            + 1 / 0.227 * (self.height / 100) ** 2 / self.right_body_r  #  type: ignore
+            + 0.093 * self.right_body_x  # type: ignore
+            + 0.048 * self.age
+        )
         return lst, lst / self.weight
 
     @property
