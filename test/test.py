@@ -4,7 +4,7 @@ from os.path import dirname, join
 import sys
 
 sys.path += [dirname(dirname(__file__))]
-from src import BIAMeasure
+from pyakern import BIAMeasure
 
 if __name__ == "__main__":
 

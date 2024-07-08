@@ -419,19 +419,18 @@ class BIAMeasure:
         if any(self._nones(self.right_body_r, self.right_body_x)):
             return None, None
         lt = float(
-            -5.22
+            -3.32
             + 0.2 * self.height**2 / self.right_body_r  # type: ignore
             + 0.005 * self.height**2 / self.right_body_x  # type: ignore
             + 1.86 * ~self.is_male()
             + 0.08 * self.weight
-            + 1.9
         )
         if self.is_male():
             b0, b1, b2 = [12.869253, -0.023729, 0.014285]
         else:
             b0, b1, b2 = [-1.831863, 0.717955, 0.018176]
         ecw = b0 + b1 * lt + b2 * lt**2
-        tbw = self.tbw_std[0]  # type: ignore
+        tbw = self.total_body_water[0]  # type: ignore
         rl = (ecw / tbw) if tbw is not None else None
         return ecw, rl
 
@@ -439,16 +438,16 @@ class BIAMeasure:
     def intra_cellular_water(self):
         """return the intracellular water in liters and as percentage
         of the total body water"""
-        tbw_lt, tbw_rl = self.total_body_water  # type: ignore
+        tbw_lt = self.total_body_water[0]  # type: ignore
         ecw_lt, ecw_rl = self.extra_cellular_water  # type: ignore
         if any(self._nones(tbw_lt, ecw_lt)):
             icw = None
         else:
             icw = float(tbw_lt - ecw_lt)  # type: ignore
-        if any(self._nones(tbw_rl, ecw_rl)):
+        if any(self._nones(ecw_rl)):
             rl = None
         else:
-            rl = float(tbw_lt - ecw_lt)  # type: ignore
+            rl = float(1 - ecw_rl)  # type: ignore
         return icw, rl
 
     @property
@@ -547,7 +546,7 @@ class BIAMeasure:
         if any(self._nones(lst_kg, smm_kg)):
             orm_kg = None
         else:
-            orm_kg = float(ffm_kg - bmc_kg)  # type: ignore
+            orm_kg = float(lst_kg - smm_kg)  # type: ignore
         if any(self._nones(smm_rl, lst_rl)):
             orm_rl = None
         else:
