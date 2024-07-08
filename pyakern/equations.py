@@ -6,8 +6,6 @@
 from math import atan, pi, exp, log
 from typing import Literal
 
-from .corrections import right_body_r_ohm
-
 
 #! FUNCTIONS
 
@@ -347,52 +345,52 @@ class BIAMeasure:
         return float(atan(rea / res)) * 180 / pi  # type: ignore
 
     @property
-    def left_arm_phase_angle_deg(self):
+    def phase_angle_left_arm(self):
         """return the left arm phase angle in degrees"""
         return self._phase_angle_deg(self.left_arm_r, self.left_arm_x)
 
     @property
-    def left_leg_phase_angle_deg(self):
+    def phase_angle_left_leg(self):
         """return the left leg phase angle in degrees"""
         return self._phase_angle_deg(self.left_leg_r, self.left_leg_x)
 
     @property
-    def left_trunk_phase_angle_deg(self):
+    def phase_angle_left_trunk(self):
         """return the left trunk phase angle in degrees"""
         return self._phase_angle_deg(self.left_trunk_r, self.left_trunk_x)
 
     @property
-    def left_body_phase_angle_deg(self):
+    def phase_angle_left_body(self):
         """return the left body phase angle in degrees"""
         return self._phase_angle_deg(self.left_body_r, self.left_body_x)
 
     @property
-    def right_arm_phase_angle_deg(self):
+    def phase_angle_right_arm(self):
         """return the right arm phase angle in degrees"""
         return self._phase_angle_deg(self.right_arm_r, self.right_arm_x)
 
     @property
-    def right_leg_phase_angle_deg(self):
+    def phase_angle_left_left(self):
         """return the right leg phase angle in degrees"""
         return self._phase_angle_deg(self.right_leg_r, self.right_leg_x)
 
     @property
-    def right_trunk_phase_angle_deg(self):
+    def phase_angle_right_trunk(self):
         """return the right trunk phase angle in degrees"""
         return self._phase_angle_deg(self.right_trunk_r, self.right_trunk_x)
 
     @property
-    def right_body_phase_angle_deg(self):
+    def phase_angle_right_body(self):
         """return the right body phase angle in degrees"""
         return self._phase_angle_deg(self.right_body_r, self.right_body_x)
 
     @property
-    def upper_body_phase_angle_deg(self):
+    def phase_angle_upper_body(self):
         """return the upper body phase angle in degrees"""
         return self._phase_angle_deg(self.upper_body_r, self.upper_body_x)
 
     @property
-    def lower_body_phase_angle_deg(self):
+    def phase_angle_lower_body(self):
         """return the lower body phase angle in degrees"""
         return self._phase_angle_deg(self.lower_body_r, self.lower_body_x)
 
@@ -401,21 +399,7 @@ class BIAMeasure:
         return self.sex == "M"
 
     @property
-    def tbw_std(self):
-        """
-        return the total body water in liters and as percentage
-        of the total body weight
-        """
-        if any(self._nones(self.right_body_r)):
-            return None, None
-        if self.is_male():
-            lt = float(+1.20 + 0.45 * self.height**2 / self.right_body_r + 0.18 * self.weight)  # type: ignore
-        else:
-            lt = float(+3.75 + 0.45 * self.height**2 / self.right_body_r + 0.11 * self.weight)  # type: ignore
-        return lt, lt / self.weight
-
-    @property
-    def tbw_atl(self):
+    def total_body_water(self):
         """return the total body water in liters and as percentage
         of the total body weight"""
         if any(self._nones(self.right_body_r)):
@@ -429,7 +413,7 @@ class BIAMeasure:
         return lt, lt / self.weight
 
     @property
-    def ecw_std(self):
+    def extra_cellular_water(self):
         """return the extracellular water in liters and as percentage
         of the total body water"""
         if any(self._nones(self.right_body_r, self.right_body_x)):
@@ -442,47 +426,21 @@ class BIAMeasure:
             + 0.08 * self.weight
             + 1.9
         )
+        if self.is_male():
+            b0, b1, b2 = [12.869253, -0.023729, 0.014285]
+        else:
+            b0, b1, b2 = [-1.831863, 0.717955, 0.018176]
+        ecw = b0 + b1 * lt + b2 * lt**2
         tbw = self.tbw_std[0]  # type: ignore
-        rl = (lt / tbw) if tbw is not None else None
-        return lt, rl
+        rl = (ecw / tbw) if tbw is not None else None
+        return ecw, rl
 
     @property
-    def ecw_atl(self):
-        """return the extracellular water in liters and as percentage
-        of the total body water"""
-        lt = float(
-            +1.579
-            + 0.055 * self.height**2 / self.right_body_r  # type: ignore
-            + 0.127 * self.weight
-            + 0.006 * self.height**2 / self.right_body_x  # type: ignore
-            + 0.932 * self.is_male()
-        )
-        tbw = self.tbw_atl[0]  # type: ignore
-        rl = (lt / tbw) if tbw is not None else None
-        return lt, rl
-
-    @property
-    def icw_std(self):
+    def intra_cellular_water(self):
         """return the intracellular water in liters and as percentage
         of the total body water"""
-        tbw_lt, tbw_rl = self.tbw_std  # type: ignore
-        ecw_lt, ecw_rl = self.ecw_std  # type: ignore
-        if any(self._nones(tbw_lt, ecw_lt)):
-            icw = None
-        else:
-            icw = float(tbw_lt - ecw_lt)  # type: ignore
-        if any(self._nones(tbw_rl, ecw_rl)):
-            rl = None
-        else:
-            rl = float(tbw_lt - ecw_lt)  # type: ignore
-        return icw, rl
-
-    @property
-    def icw_atl(self):
-        """return the intracellular water in liters and as percentage
-        of the total body water"""
-        tbw_lt, tbw_rl = self.tbw_atl  # type: ignore
-        ecw_lt, ecw_rl = self.ecw_atl  # type: ignore
+        tbw_lt, tbw_rl = self.total_body_water  # type: ignore
+        ecw_lt, ecw_rl = self.extra_cellular_water  # type: ignore
         if any(self._nones(tbw_lt, ecw_lt)):
             icw = None
         else:
@@ -498,14 +456,8 @@ class BIAMeasure:
         """return the user BMI"""
         return self.weight / (self.height / 100) ** 2
 
-    def _correct_for_obese(self, ffm: float):
-        """correction for obesity"""
-        if self.bmi >= 30:
-            return ffm - 0.256 * (self.bmi - 30)
-        return ffm
-
     @property
-    def ffm_std(self):
+    def fat_free_mass(self):
         """return the free-fat mass in kg and as percentage
         of the total body weight"""
         if any(self._nones(self.right_body_r, self.right_body_x)):
@@ -518,52 +470,59 @@ class BIAMeasure:
             + 7.827 * self.is_male()
             + 0.2157 * self.height
         )
-        ffm = self._correct_for_obese(ffm)
+        if self.bmi >= 30:
+            ffm = ffm - 0.256 * (self.bmi - 30)
+        if self.is_male():
+            b0, b1, b2 = [40.949695, -0.393518, 0.017217]
+        else:
+            b0, b1, b2 = [50.468441, -1.532617, 0.047251]
+        ffm = b0 + b1 * ffm + b2 * ffm**2
         return ffm, ffm / self.weight
-        # lst_kg, lst_pr = self.lst_std
-        # bmc_kg, bmc_pr = self.bmc
-        # return lst_kg + bmc_kg, lst_pr + bmc_pr
 
     @property
-    def ffm_atl(self):
-        """return the free-fat mass in kg and as percentage
-        of the total body weight"""
+    def fat_mass(self):
+        """return the fat mass in kg and as percentage of the total body weight"""
+        if any(self._nones(self.fat_free_mass)):
+            return None, None
+        ffm_kg, ffm_rl = self.fat_free_mass
+        return float(self.weight - ffm_kg), float(1 - ffm_rl)  # type: ignore
+
+    @property
+    def bone_mineral_content(self):
+        """return the bone mineral content in kg and as percentage of the
+        user body weight"""
         if any(self._nones(self.right_body_r)):
             return None, None
-        ffm = float(  # Mathias et al. 2021
-            -2.261
-            + 0.327 * self.height**2 / self.right_body_r  # type: ignore
-            + 0.525 * self.weight
-            + 5.462 * self.is_male()
+        kg = float(
+            0.89328
+            * exp(
+                -0.47127 * ln(self.right_body_r)  # type: ignore
+                + 2.65176 * ln(self.height)
+                - 9.62779
+            )
+            - 0.12978 * ~self.is_male()
+            + 0.35966
         )
-        # ffm = (  # campa et al 2023
-        #     -7.729
-        #     + 0.686 * self.weight
-        #     + 1 / 0.227 * (self.height / 100) ** 2 / self.right_body_r  # type: ignore
-        #     + 0.086 * self.right_body_x  # type: ignore
-        #     + 0.058 * self.age
-        # )
-        ffm = self._correct_for_obese(ffm)
-        return ffm, ffm / self.weight
+        return kg, kg / self.weight
 
     @property
-    def fm_std(self):
-        """return the fat mass in kg and as percentage of the total body weight"""
-        if any(self._nones(self.ffm_std)):
-            return None, None
-        ffm_kg, ffm_rl = self.ffm_std
-        return float(self.weight - ffm_kg), float(1 - ffm_rl)  # type: ignore
+    def lean_soft_mass(self):
+        """return the lean soft mass in kg and as percentage of the user
+        body weight"""
+        bmc_kg, bmc_rl = self.bone_mineral_content
+        ffm_kg, ffm_rl = self.fat_free_mass
+        if any(self._nones(ffm_kg, bmc_kg)):
+            lst_kg = None
+        else:
+            lst_kg = float(ffm_kg - bmc_kg)  # type: ignore
+        if any(self._nones(ffm_rl, bmc_rl)):
+            lst_rl = None
+        else:
+            lst_rl = float(ffm_rl - bmc_rl)  # type: ignore
+        return lst_kg, lst_rl
 
     @property
-    def fm_atl(self):
-        """return the fat mass in kg and as percentage of the total body weight"""
-        if any(self._nones(self.ffm_atl)):
-            return None, None
-        ffm_kg, ffm_rl = self.ffm_atl
-        return float(self.weight - ffm_kg), float(1 - ffm_rl)  # type: ignore
-
-    @property
-    def smm_std(self):
+    def skeletal_muscle_mass(self):
         """return the skeletal muscle mass in kg and as percentage of the total body weight"""
         if any(self._nones(self.right_body_r)):
             return None, None
@@ -573,12 +532,27 @@ class BIAMeasure:
             - 0.071 * self.age
             + 3.825 * self.is_male()
         )
+        if self.is_male():
+            b0, b1, b2 = [132.992926, -7.665973, 0.146171]
+        else:
+            b0, b1, b2 = [26.291962, -1.826563, 0.083549]
+        smm = b0 + b1 * smm + b2 * smm**2
         return smm, smm / self.weight
 
     @property
-    def smm_atl(self):
-        """return the skeletal muscle mass in kg and as percentage of the total body weight"""
-        return self.smm_std
+    def organs_mass(self):
+        """return the mass of organs in kg and as percentage of the total body weight"""
+        smm_kg, smm_rl = self.skeletal_muscle_mass
+        lst_kg, lst_rl = self.lean_soft_mass
+        if any(self._nones(lst_kg, smm_kg)):
+            orm_kg = None
+        else:
+            orm_kg = float(ffm_kg - bmc_kg)  # type: ignore
+        if any(self._nones(smm_rl, lst_rl)):
+            orm_rl = None
+        else:
+            orm_rl = float(lst_rl - smm_rl)  # type: ignore
+        return orm_kg, orm_rl
 
     @property
     def _trunk_appendicular_index(self):
@@ -601,7 +575,7 @@ class BIAMeasure:
         )
 
     @property
-    def smm_left_arm(self):
+    def skeletal_muscle_mass_left_arm(self):
         """return the left arm skeletal muscle mass in kg and as percentage of
         the user weight"""
         if any(self._nones(self.left_arm_r, self._trunk_appendicular_index)):
@@ -615,7 +589,7 @@ class BIAMeasure:
         return smm, smm / self.weight
 
     @property
-    def smm_right_arm(self):
+    def skeletal_muscle_mass_right_arm(self):
         """return the right arm skeletal muscle mass in kg and as percentage of
         the user weight"""
         if any(self._nones(self.right_arm_r, self._trunk_appendicular_index)):
@@ -629,7 +603,7 @@ class BIAMeasure:
         return smm, smm / self.weight
 
     @property
-    def smm_left_leg(self):
+    def skeletal_muscle_mass_left_leg(self):
         """return the left leg skeletal muscle mass in kg and as percentage of
         the user weight"""
         if any(self._nones(self.left_leg_r, self._trunk_appendicular_index)):
@@ -643,7 +617,7 @@ class BIAMeasure:
         return smm, smm / self.weight
 
     @property
-    def smm_right_leg(self):
+    def skeletal_muscle_mass_right_leg(self):
         """return the right leg skeletal muscle mass in kg and as percentage of
         the user weight"""
         if any(self._nones(self.right_leg_r, self._trunk_appendicular_index)):
@@ -657,115 +631,22 @@ class BIAMeasure:
         return smm, smm / self.weight
 
     @property
-    def bmr_std(self):
+    def basal_metabolic_rate(self):
         """return the basal metabolic rate in kcal"""
-        if any(self._nones(self.ffm_std[0])):
+        ffm_kg = self.fat_free_mass[0]
+        if any(self._nones(ffm_kg)):
             return None
-        if self.bmi >= 30:
-            return float(
-                +478.23
-                + 18.72 * self.ffm_std[0]  # type: ignore
-                + 5.83 * self.fm_std[0]  # type: ignore
-                - 2.55 * self.age
-            )
+        fm_kg = self.weight - ffm_kg  # type: ignore
         return float(
             +238.85
             * (
-                +0.05192 * self.ffm_std[0]  # type: ignore
-                + 0.04036 * self.fm_std[0]  # type: ignore
+                +0.05192 * ffm_kg  # type: ignore
+                + 0.04036 * fm_kg  # type: ignore
                 + 0.869 * self.is_male()
                 - 0.01181 * self.age
                 + 2.992
             )
         )
-
-    @property
-    def bmr_atl(self):
-        """return the basal metabolic rate in kcal"""
-        if any(self._nones(self.ffm_atl[0])):
-            return None
-        return float(22.771 * self.ffm_atl[0] + 484.264)  # type: ignore
-
-    @property
-    def lst_std(self):
-        """return the lean soft tissue in kg and as percentage of the user
-        body weight"""
-        if any(
-            self._nones(
-                self.left_body_r,
-                self.right_body_r,
-                self.right_trunk_r,
-                self._trunk_appendicular_index,
-            )
-        ):
-            return None, None
-        left_body = float(
-            +9.016
-            + 0.399 * self.height**2 / self.left_body_r  # type: ignore
-            - 91.962 * self._trunk_appendicular_index  # type: ignore
-            + 1.229 * self.is_male()
-        )
-        right_body = float(
-            +0.461
-            + 0.273 * self.height**2 / self.right_body_r  # type: ignore
-            + 0.006 * self.height**2 / self.right_trunk_r  # type: ignore
-        )
-        lst = left_body + right_body
-        # if any(
-        #    self._nones(
-        #        self.upper_body_r,
-        #        self.lower_body_r,
-        #        self._trunk_appendicular_index,
-        #    )
-        # ):
-        #    return None, None
-        # lower_body = float(
-        #     +7.998
-        #     + 0.284 * self.height**2 / self.lower_body_r  # type: ignore
-        #     - 100.561 * self._trunk_appendicular_index  # type: ignore
-        #     + 1.559 * self.is_male()
-        # )
-        # upper_body = float(
-        #     +1.560
-        #     + 0.102 * self.height**2 / self.upper_body_r  # type: ignore
-        #     - 23.420 * self._trunk_appendicular_index  # type: ignore
-        #     + 0.717 * self.is_male()
-        # )
-        # lst = upper_body + lower_body
-        return lst, lst / self.weight
-
-    @property
-    def lst_atl(self):
-        """return the lean soft tissue in kg and as percentage of the user
-        body weight"""
-        if any(self._nones(self.right_body_r, self.right_body_x)):
-            return None, None
-        lst = (  # Campa et al. 2023
-            -8.929
-            + 0.635 * self.weight
-            + 1 / 0.227 * (self.height / 100) ** 2 / self.right_body_r  #  type: ignore
-            + 0.093 * self.right_body_x  # type: ignore
-            + 0.048 * self.age
-        )
-        return lst, lst / self.weight
-
-    @property
-    def bmc(self):
-        """return the bone mineral content in kg and as percentage of the
-        user body weight"""
-        if any(self._nones(self.right_body_r)):
-            return None
-        kg = float(
-            0.89328
-            * exp(
-                -0.47127 * ln(self.right_body_r)  # type: ignore
-                + 2.65176 * ln(self.height)
-                - 9.62779
-            )
-            - 0.12978 * ~self.is_male()
-            + 0.35966
-        )
-        return kg, kg / self.weight
 
     def to_dict(self):
         """return all the measures as dictionary"""
