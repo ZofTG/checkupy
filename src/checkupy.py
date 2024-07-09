@@ -79,6 +79,96 @@ class CheckupBIA:
     _upper_body_r_betas = (-63.78991222, 0.901742825)
     _upper_body_x_betas = (9.520406271, 0.612947206)
 
+    def __init__(
+        self,
+        age: int | float,
+        sex: Literal["M", "F"],
+        height: int,
+        weight: int | float,
+        left_arm_r: int | float | None = None,
+        left_arm_x: int | float | None = None,
+        left_trunk_r: int | float | None = None,
+        left_trunk_x: int | float | None = None,
+        left_leg_r: int | float | None = None,
+        left_leg_x: int | float | None = None,
+        left_body_r: int | float | None = None,
+        left_body_x: int | float | None = None,
+        right_arm_r: int | float | None = None,
+        right_arm_x: int | float | None = None,
+        right_trunk_r: int | float | None = None,
+        right_trunk_x: int | float | None = None,
+        right_leg_r: int | float | None = None,
+        right_leg_x: int | float | None = None,
+        right_body_r: int | float | None = None,
+        right_body_x: int | float | None = None,
+        upper_body_r: int | float | None = None,
+        upper_body_x: int | float | None = None,
+        lower_body_r: int | float | None = None,
+        lower_body_x: int | float | None = None,
+        raw_electric_data: bool = False,
+    ):
+        self.set_age(age)
+        self.set_sex(sex)
+        self.set_height(height)
+        self.set_weight(weight)
+
+        self.set_left_arm_r(left_arm_r, raw_electric_data)
+        self.set_left_arm_x(left_arm_x, raw_electric_data)
+        self.set_left_leg_r(left_leg_r, raw_electric_data)
+        self.set_left_leg_x(left_leg_x, raw_electric_data)
+        self.set_left_trunk_r(left_trunk_r, raw_electric_data)
+        self.set_left_trunk_x(left_trunk_x, raw_electric_data)
+        self.set_left_body_r(left_body_r, raw_electric_data)
+        self.set_left_body_x(left_body_x, raw_electric_data)
+
+        self.set_right_arm_r(right_arm_r, raw_electric_data)
+        self.set_right_arm_x(right_arm_x, raw_electric_data)
+        self.set_right_leg_r(right_leg_r, raw_electric_data)
+        self.set_right_leg_x(right_leg_x, raw_electric_data)
+        self.set_right_trunk_r(right_trunk_r, raw_electric_data)
+        self.set_right_trunk_x(right_trunk_x, raw_electric_data)
+        self.set_right_body_r(right_body_r, raw_electric_data)
+        self.set_right_body_x(right_body_x, raw_electric_data)
+
+        self.set_upper_body_r(upper_body_r, raw_electric_data)
+        self.set_upper_body_x(upper_body_x, raw_electric_data)
+        self.set_lower_body_r(lower_body_r, raw_electric_data)
+        self.set_lower_body_x(lower_body_x, raw_electric_data)
+
+    def _nones(self, *args):
+        """private method to check if any entry is None"""
+        return [x is None for x in args]
+
+    def _phase_angle_deg(
+        self,
+        res: float | int | None,
+        rea: float | int | None,
+    ):
+        """return the phase angle in degrees"""
+        if any(self._nones(res, rea)):
+            return None
+        return float(atan(rea / res)) * 180 / pi  # type: ignore
+
+    @property
+    def _trunk_appendicular_index(self):
+        """return the ratio between the trunk and appendicular resistance"""
+        if any(
+            self._nones(
+                self.left_trunk_r,
+                self.right_trunk_r,
+                self.left_arm_r,
+                self.left_leg_r,
+                self.right_arm_r,
+                self.right_leg_r,
+            )
+        ):
+            return None
+        return (
+            2
+            * (self.left_trunk_r + self.right_trunk_r)  # type: ignore
+            / (self.left_arm_r + self.left_leg_r + self.right_arm_r + self.right_leg_r)  # type: ignore
+        )
+
     def set_age(self, age: int | float):
         """set the user age in years"""
         self._age = int(age)
@@ -515,62 +605,6 @@ class CheckupBIA:
         else:
             self._lower_body_x = sum(map(prod, zip((1, x), self._lower_body_x_betas)))
 
-    def __init__(
-        self,
-        age: int | float,
-        sex: Literal["M", "F"],
-        height: int,
-        weight: int | float,
-        left_arm_r: int | float | None = None,
-        left_arm_x: int | float | None = None,
-        left_trunk_r: int | float | None = None,
-        left_trunk_x: int | float | None = None,
-        left_leg_r: int | float | None = None,
-        left_leg_x: int | float | None = None,
-        left_body_r: int | float | None = None,
-        left_body_x: int | float | None = None,
-        right_arm_r: int | float | None = None,
-        right_arm_x: int | float | None = None,
-        right_trunk_r: int | float | None = None,
-        right_trunk_x: int | float | None = None,
-        right_leg_r: int | float | None = None,
-        right_leg_x: int | float | None = None,
-        right_body_r: int | float | None = None,
-        right_body_x: int | float | None = None,
-        upper_body_r: int | float | None = None,
-        upper_body_x: int | float | None = None,
-        lower_body_r: int | float | None = None,
-        lower_body_x: int | float | None = None,
-        raw_electric_data: bool = False,
-    ):
-        self.set_age(age)
-        self.set_sex(sex)
-        self.set_height(height)
-        self.set_weight(weight)
-
-        self.set_left_arm_r(left_arm_r, raw_electric_data)
-        self.set_left_arm_x(left_arm_x, raw_electric_data)
-        self.set_left_leg_r(left_leg_r, raw_electric_data)
-        self.set_left_leg_x(left_leg_x, raw_electric_data)
-        self.set_left_trunk_r(left_trunk_r, raw_electric_data)
-        self.set_left_trunk_x(left_trunk_x, raw_electric_data)
-        self.set_left_body_r(left_body_r, raw_electric_data)
-        self.set_left_body_x(left_body_x, raw_electric_data)
-
-        self.set_right_arm_r(right_arm_r, raw_electric_data)
-        self.set_right_arm_x(right_arm_x, raw_electric_data)
-        self.set_right_leg_r(right_leg_r, raw_electric_data)
-        self.set_right_leg_x(right_leg_x, raw_electric_data)
-        self.set_right_trunk_r(right_trunk_r, raw_electric_data)
-        self.set_right_trunk_x(right_trunk_x, raw_electric_data)
-        self.set_right_body_r(right_body_r, raw_electric_data)
-        self.set_right_body_x(right_body_x, raw_electric_data)
-
-        self.set_upper_body_r(upper_body_r, raw_electric_data)
-        self.set_upper_body_x(upper_body_x, raw_electric_data)
-        self.set_lower_body_r(lower_body_r, raw_electric_data)
-        self.set_lower_body_x(lower_body_x, raw_electric_data)
-
     @property
     def age(self):
         """the user age in years"""
@@ -863,20 +897,6 @@ class CheckupBIA:
             self.upper_body_x - self._upper_body_x_betas[0]
         ) / self._upper_body_x_betas[1]
 
-    def _nones(self, *args):
-        """private method to check if any entry is None"""
-        return [x is None for x in args]
-
-    def _phase_angle_deg(
-        self,
-        res: float | int | None,
-        rea: float | int | None,
-    ):
-        """return the phase angle in degrees"""
-        if any(self._nones(res, rea)):
-            return None
-        return float(atan(rea / res)) * 180 / pi  # type: ignore
-
     @property
     def phase_angle_left_arm(self):
         """return the left arm phase angle in degrees"""
@@ -1085,26 +1105,6 @@ class CheckupBIA:
         else:
             orm_rl = float(lst_rl - smm_rl)  # type: ignore
         return orm_kg, orm_rl
-
-    @property
-    def _trunk_appendicular_index(self):
-        """return the ratio between the trunk and appendicular resistance"""
-        if any(
-            self._nones(
-                self.left_trunk_r,
-                self.right_trunk_r,
-                self.left_arm_r,
-                self.left_leg_r,
-                self.right_arm_r,
-                self.right_leg_r,
-            )
-        ):
-            return None
-        return (
-            2
-            * (self.left_trunk_r + self.right_trunk_r)  # type: ignore
-            / (self.left_arm_r + self.left_leg_r + self.right_arm_r + self.right_leg_r)  # type: ignore
-        )
 
     @property
     def skeletal_muscle_mass_left_arm(self):
