@@ -7,14 +7,6 @@ from math import atan, exp, log, pi, prod
 from typing import Literal
 
 
-#! FUNCTIONS
-
-
-def ln(x: int | float):
-    """return the natural logarithm of x"""
-    return log(x, exp(1))
-
-
 #! CLASS
 
 
@@ -134,6 +126,10 @@ class CheckupBIA:
         self.set_upper_body_x(upper_body_x, raw_electric_data)
         self.set_lower_body_r(lower_body_r, raw_electric_data)
         self.set_lower_body_x(lower_body_x, raw_electric_data)
+
+    def _ln(self, x: int | float):
+        """return the natural logarithm of x"""
+        return log(x, exp(1))
 
     def _nones(self, *args):
         """private method to check if any entry is None"""
@@ -1048,8 +1044,8 @@ class CheckupBIA:
         kg = float(
             0.89328
             * exp(
-                -0.47127 * ln(self.right_body_r)  # type: ignore
-                + 2.65176 * ln(self.height)
+                -0.47127 * self._ln(self.right_body_r)  # type: ignore
+                + 2.65176 * self._ln(self.height)
                 - 9.62779
             )
             - 0.12978 * ~self.is_male()
