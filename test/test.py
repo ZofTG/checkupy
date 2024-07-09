@@ -4,7 +4,7 @@ from os.path import dirname, join
 import sys
 
 sys.path += [dirname(dirname(__file__))]
-from pyakern import BIAMeasure
+from src import CheckupBIA
 
 if __name__ == "__main__":
 
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     data = {key: str(val) if key == "sex" else float(val) for key, val in data.items()}
 
     # get the body measurements
-    bia = BIAMeasure(**data)  # type: ignore
+    bia = CheckupBIA(**data)  # type: ignore
     for i, v in bia.to_dict().items():
         if isinstance(v, tuple):
             t = f"{v[0]:0.3f} ({(v[1]*100):0.1f}%)"
