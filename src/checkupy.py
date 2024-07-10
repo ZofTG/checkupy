@@ -197,7 +197,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or r is None:
+        if not raw or r is None:
             self._left_arm_r = r
         else:
             self._left_arm_r = sum(map(prod, zip((1, r), self._left_arm_r_betas)))
@@ -218,7 +218,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or x is None:
+        if not raw or x is None:
             self._left_arm_x = x
         else:
             self._left_arm_x = sum(map(prod, zip((1, x), self._left_arm_x_betas)))
@@ -239,7 +239,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or r is None:
+        if not raw or r is None:
             self._left_leg_r = r
         else:
             self._left_leg_r = sum(map(prod, zip((1, r), self._left_leg_r_betas)))
@@ -260,7 +260,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or x is None:
+        if not raw or x is None:
             self._left_leg_x = x
         else:
             self._left_leg_x = sum(map(prod, zip((1, x), self._left_leg_x_betas)))
@@ -281,7 +281,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or r is None:
+        if not raw or r is None:
             self._left_trunk_r = r
         else:
             self._left_trunk_r = sum(map(prod, zip((1, r), self._left_trunk_r_betas)))
@@ -302,7 +302,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or x is None:
+        if not raw or x is None:
             self._left_trunk_x = x
         else:
             self._left_trunk_x = sum(map(prod, zip((1, x), self._left_trunk_x_betas)))
@@ -323,7 +323,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or r is None:
+        if not raw or r is None:
             self._left_body_r = r
         else:
             self._left_body_r = sum(map(prod, zip((1, r), self._left_body_r_betas)))
@@ -344,7 +344,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or x is None:
+        if not raw or x is None:
             self._left_body_x = x
         else:
             self._left_body_x = sum(map(prod, zip((1, x), self._left_body_x_betas)))
@@ -365,7 +365,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or r is None:
+        if not raw or r is None:
             self._right_arm_r = r
         else:
             self._right_arm_r = sum(map(prod, zip((1, r), self._right_arm_r_betas)))
@@ -386,7 +386,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or x is None:
+        if not raw or x is None:
             self._right_arm_x = x
         else:
             self._right_arm_x = sum(map(prod, zip((1, x), self._right_arm_x_betas)))
@@ -407,7 +407,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or r is None:
+        if not raw or r is None:
             self._right_leg_r = r
         else:
             self._right_leg_r = sum(map(prod, zip((1, r), self._right_leg_r_betas)))
@@ -428,7 +428,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or x is None:
+        if not raw or x is None:
             self._right_leg_x = x
         else:
             self._right_leg_x = sum(map(prod, zip((1, x), self._right_leg_x_betas)))
@@ -449,7 +449,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or r is None:
+        if not raw or r is None:
             self._right_trunk_r = r
         else:
             self._right_trunk_r = sum(map(prod, zip((1, r), self._right_trunk_r_betas)))
@@ -470,7 +470,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or x is None:
+        if not raw or x is None:
             self._right_trunk_x = x
         else:
             self._right_trunk_x = sum(map(prod, zip((1, x), self._right_trunk_x_betas)))
@@ -491,7 +491,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or r is None:
+        if not raw or r is None:
             self._right_body_r = r
         else:
             self._right_body_r = sum(map(prod, zip((1, r), self._right_body_r_betas)))
@@ -512,7 +512,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or x is None:
+        if not raw or x is None:
             self._right_body_x = x
         else:
             self._right_body_x = sum(map(prod, zip((1, x), self._right_body_x_betas)))
@@ -533,7 +533,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or r is None:
+        if not raw or r is None:
             self._upper_body_r = r
         else:
             self._upper_body_r = sum(map(prod, zip((1, r), self._upper_body_r_betas)))
@@ -554,7 +554,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or x is None:
+        if not raw or x is None:
             self._upper_body_x = x
         else:
             self._upper_body_x = sum(map(prod, zip((1, x), self._upper_body_x_betas)))
@@ -575,7 +575,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or r is None:
+        if not raw or r is None:
             self._lower_body_r = r
         else:
             self._lower_body_r = sum(map(prod, zip((1, r), self._lower_body_r_betas)))
@@ -596,7 +596,7 @@ class CheckupBIA:
         raw: bool = False
             is the value raw or corrected?
         """
-        if raw or x is None:
+        if not raw or x is None:
             self._lower_body_x = x
         else:
             self._lower_body_x = sum(map(prod, zip((1, x), self._lower_body_x_betas)))
@@ -1012,9 +1012,9 @@ class CheckupBIA:
             return None, None
         ffm = float(  # kanellakis
             +12.299
-            - 0.116 * self.right_body_r / (self.height / 100)  # type: ignore
+            - 0.116 * self.right_body_r / ((self.height / 100) ** 2)  # type: ignore
             + 0.164 * self.weight
-            + 0.365 * self.right_body_x / (self.height / 100)  # type: ignore
+            + 0.365 * self.right_body_x / ((self.height / 100) ** 2)  # type: ignore
             + 7.827 * self.is_male()
             + 0.2157 * self.height
         )
