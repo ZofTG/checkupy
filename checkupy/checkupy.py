@@ -894,52 +894,52 @@ class CheckupBIA:
         ) / self._upper_body_x_betas[1]
 
     @property
-    def phase_angle_left_arm(self):
+    def left_arm_phase_angle(self):
         """return the left arm phase angle in degrees"""
         return self._phase_angle_deg(self.left_arm_r, self.left_arm_x)
 
     @property
-    def phase_angle_left_leg(self):
+    def left_leg_phase_angle(self):
         """return the left leg phase angle in degrees"""
         return self._phase_angle_deg(self.left_leg_r, self.left_leg_x)
 
     @property
-    def phase_angle_left_trunk(self):
+    def left_trunk_phase_angle(self):
         """return the left trunk phase angle in degrees"""
         return self._phase_angle_deg(self.left_trunk_r, self.left_trunk_x)
 
     @property
-    def phase_angle_left_body(self):
+    def left_body_phase_angle(self):
         """return the left body phase angle in degrees"""
         return self._phase_angle_deg(self.left_body_r, self.left_body_x)
 
     @property
-    def phase_angle_right_arm(self):
+    def right_arm_phase_angle(self):
         """return the right arm phase angle in degrees"""
         return self._phase_angle_deg(self.right_arm_r, self.right_arm_x)
 
     @property
-    def phase_angle_right_leg(self):
+    def right_leg_phase_angle(self):
         """return the right leg phase angle in degrees"""
         return self._phase_angle_deg(self.right_leg_r, self.right_leg_x)
 
     @property
-    def phase_angle_right_trunk(self):
+    def right_trunk_phase_angle(self):
         """return the right trunk phase angle in degrees"""
         return self._phase_angle_deg(self.right_trunk_r, self.right_trunk_x)
 
     @property
-    def phase_angle_right_body(self):
+    def right_body_phase_angle(self):
         """return the right body phase angle in degrees"""
         return self._phase_angle_deg(self.right_body_r, self.right_body_x)
 
     @property
-    def phase_angle_upper_body(self):
+    def upper_body_phase_angle(self):
         """return the upper body phase angle in degrees"""
         return self._phase_angle_deg(self.upper_body_r, self.upper_body_x)
 
     @property
-    def phase_angle_lower_body(self):
+    def lower_body_phase_angle(self):
         """return the lower body phase angle in degrees"""
         return self._phase_angle_deg(self.lower_body_r, self.lower_body_x)
 
@@ -1103,7 +1103,7 @@ class CheckupBIA:
         return orm_kg, orm_rl
 
     @property
-    def skeletal_muscle_mass_left_arm(self):
+    def left_arm_skeletal_muscle_mass(self):
         """return the left arm skeletal muscle mass in kg and as percentage of
         the total skeletal muscle mass"""
         if any(self._nones(self.left_arm_r, self._trunk_appendicular_index)):
@@ -1118,11 +1118,11 @@ class CheckupBIA:
         if tot is None:
             prc = None
         else:
-            prc = smm / tot
+            prc = float(smm / tot)
         return smm, prc
 
     @property
-    def skeletal_muscle_mass_right_arm(self):
+    def right_arm_skeletal_muscle_mass(self):
         """return the right arm skeletal muscle mass in kg and as percentage of
         the total skeletal muscle mass"""
         if any(self._nones(self.right_arm_r, self._trunk_appendicular_index)):
@@ -1137,11 +1137,11 @@ class CheckupBIA:
         if tot is None:
             prc = None
         else:
-            prc = smm / tot
+            prc = float(smm / tot)
         return smm, prc
 
     @property
-    def skeletal_muscle_mass_left_leg(self):
+    def left_leg_skeletal_muscle_mass(self):
         """return the left leg skeletal muscle mass in kg and as percentage of
         the total skeletal muscle mass"""
         if any(self._nones(self.left_leg_r, self._trunk_appendicular_index)):
@@ -1156,11 +1156,11 @@ class CheckupBIA:
         if tot is None:
             prc = None
         else:
-            prc = smm / tot
+            prc = float(smm / tot)
         return smm, prc
 
     @property
-    def skeletal_muscle_mass_right_leg(self):
+    def right_leg_skeletal_muscle_mass(self):
         """return the right leg skeletal muscle mass in kg and as percentage of
         the total skeletal muscle mass"""
         if any(self._nones(self.right_leg_r, self._trunk_appendicular_index)):
@@ -1175,17 +1175,17 @@ class CheckupBIA:
         if tot is None:
             prc = None
         else:
-            prc = smm / tot
+            prc = float(smm / tot)
         return smm, prc
 
     @property
-    def skeletal_muscle_mass_trunk(self):
+    def trunk_skeletal_muscle_mass(self):
         """return the trunk skeletal muscle mass in kg and as percentage of
         the total skeletal muscle mass"""
-        lamm = self.skeletal_muscle_mass_left_arm[0]
-        llmm = self.skeletal_muscle_mass_left_leg[0]
-        ramm = self.skeletal_muscle_mass_right_arm[0]
-        rlmm = self.skeletal_muscle_mass_right_leg[0]
+        lamm = self.left_arm_skeletal_muscle_mass[0]
+        llmm = self.left_leg_skeletal_muscle_mass[0]
+        ramm = self.right_arm_skeletal_muscle_mass[0]
+        rlmm = self.right_leg_skeletal_muscle_mass[0]
         smm_kg = self.skeletal_muscle_mass[0]
         if any(self._nones(lamm, llmm, ramm, rlmm, smm_kg)):
             return None, None
@@ -1193,89 +1193,89 @@ class CheckupBIA:
         return tmm, float(tmm / smm_kg)  # type: ignore
 
     @property
-    def fat_mass_left_arm(self):
+    def left_arm_fat_mass(self):
         """return the left arm fat mass in kg and as percentage of
         the as percentage of the total fat mass"""
-        if any(self._nones(self.phase_angle_left_arm)):
+        if any(self._nones(self.left_arm_phase_angle)):
             return None, None
         sfm = float(
             -0.420
             + 0.107 * self.bmi
-            - 0.216 * self.phase_angle_left_arm  # type: ignore
+            - 0.216 * self.left_arm_phase_angle  # type: ignore
             - 0.163 * self.is_male()
         )
         tot = self.fat_mass[0]
         if tot is None:
             prc = None
         else:
-            prc = sfm / tot
+            prc = float(sfm / tot)
         return sfm, prc
 
     @property
-    def fat_mass_left_leg(self):
+    def left_leg_fat_mass(self):
         """return the left leg fat mass in kg and as percentage of
         the as percentage of the total fat mass"""
-        if any(self._nones(self.phase_angle_left_leg)):
+        if any(self._nones(self.left_leg_phase_angle)):
             return None, None
         sfm = float(
             1.545
             + 0.250 * self.bmi
             - 1.343 * self.is_male()
-            - 0.524 * self.phase_angle_left_leg  # type: ignore
+            - 0.524 * self.left_leg_phase_angle  # type: ignore
         )
         tot = self.fat_mass[0]
         if tot is None:
             prc = None
         else:
-            prc = sfm / tot
+            prc = float(sfm / tot)
         return sfm, prc
 
     @property
-    def fat_mass_right_arm(self):
+    def right_arm_fat_mass(self):
         """return the right arm fat mass in kg and as percentage of
         the as percentage of the total fat mass"""
-        if any(self._nones(self.phase_angle_right_arm)):
+        if any(self._nones(self.right_arm_phase_angle)):
             return None, None
         sfm = float(
             -0.447
             + 0.102 * self.bmi
-            - 0.188 * self.phase_angle_right_arm  # type: ignore
+            - 0.188 * self.right_arm_phase_angle  # type: ignore
             - 0.155 * self.is_male()
         )
         tot = self.fat_mass[0]
         if tot is None:
             prc = None
         else:
-            prc = sfm / tot
+            prc = float(sfm / tot)
         return sfm, prc
 
     @property
-    def fat_mass_right_leg(self):
+    def right_leg_fat_mass(self):
         """return the right leg fat mass in kg and as percentage of
         the as percentage of the total fat mass"""
-        if any(self._nones(self.phase_angle_right_leg)):  # type: ignore
+        if any(self._nones(self.right_leg_phase_angle)):  # type: ignore
             return None, None
         sfm = float(
             2.731
             + 0.256 * self.bmi
             - 1.286 * self.is_male()
-            - 0.7 * self.phase_angle_right_leg  # type: ignore
+            - 0.7 * self.right_leg_phase_angle  # type: ignore
         )
         tot = self.fat_mass[0]
         if tot is None:
             prc = None
         else:
-            prc = sfm / tot
+            prc = float(sfm / tot)
         return sfm, prc
 
     @property
-    def fat_mass_trunk(self):
+    def trunk_fat_mass(self):
         """return the trunk fat mass in kg and as percentage of
         the total fat mass"""
-        lafm = self.fat_mass_left_arm[0]
-        llfm = self.fat_mass_left_leg[0]
-        rafm = self.fat_mass_right_arm[0]
-        rlfm = self.fat_mass_right_leg[0]
+        lafm = self.left_arm_fat_mass[0]
+        llfm = self.left_leg_fat_mass[0]
+        rafm = self.right_arm_fat_mass[0]
+        rlfm = self.right_leg_fat_mass[0]
         fm_kg = self.fat_mass[0]
         if any(self._nones(lafm, llfm, rafm, rlfm, fm_kg)):
             return None, None
