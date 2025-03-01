@@ -147,9 +147,11 @@ class CheckupBIA:
             is the value raw or corrected?
         """
         if not raw or r is None:
-            self._left_arm_resistance= r
+            self._left_arm_resistance = r
         else:
-            self._left_arm_resistance= sum(map(prod, zip((1, r), self._left_arm_resistance_betas)))
+            self._left_arm_resistance = sum(
+                map(prod, zip((1, r), self._left_arm_resistance_betas))
+            )
 
     def set_left_arm_reactance(
         self,
@@ -170,7 +172,9 @@ class CheckupBIA:
         if not raw or x is None:
             self._left_arm_reactance = x
         else:
-            self._left_arm_reactance = sum(map(prod, zip((1, x), self._left_arm_reactance_betas)))
+            self._left_arm_reactance = sum(
+                map(prod, zip((1, x), self._left_arm_reactance_betas))
+            )
 
     def set_left_leg_resistance(
         self,
@@ -189,9 +193,11 @@ class CheckupBIA:
             is the value raw or corrected?
         """
         if not raw or r is None:
-            self._left_leg_resistance= r
+            self._left_leg_resistance = r
         else:
-            self._left_leg_resistance= sum(map(prod, zip((1, r), self._left_leg_resistance_betas)))
+            self._left_leg_resistance = sum(
+                map(prod, zip((1, r), self._left_leg_resistance_betas))
+            )
 
     def set_left_leg_reactance(
         self,
@@ -212,7 +218,9 @@ class CheckupBIA:
         if not raw or x is None:
             self._left_leg_reactance = x
         else:
-            self._left_leg_reactance = sum(map(prod, zip((1, x), self._left_leg_reactance_betas)))
+            self._left_leg_reactance = sum(
+                map(prod, zip((1, x), self._left_leg_reactance_betas))
+            )
 
     def set_left_trunk_resistance(
         self,
@@ -231,9 +239,11 @@ class CheckupBIA:
             is the value raw or corrected?
         """
         if not raw or r is None:
-            self._left_trunk_resistance= r
+            self._left_trunk_resistance = r
         else:
-            self._left_trunk_resistance= sum(map(prod, zip((1, r), self._left_trunk_resistance_betas)))
+            self._left_trunk_resistance = sum(
+                map(prod, zip((1, r), self._left_trunk_resistance_betas))
+            )
 
     def set_left_trunk_reactance(
         self,
@@ -254,7 +264,9 @@ class CheckupBIA:
         if not raw or x is None:
             self._left_trunk_reactance = x
         else:
-            self._left_trunk_reactance = sum(map(prod, zip((1, x), self._left_trunk_reactance_betas)))
+            self._left_trunk_reactance = sum(
+                map(prod, zip((1, x), self._left_trunk_reactance_betas))
+            )
 
     def set_left_body_resistance(
         self,
@@ -273,9 +285,11 @@ class CheckupBIA:
             is the value raw or corrected?
         """
         if not raw or r is None:
-            self._left_body_resistance= r
+            self._left_body_resistance = r
         else:
-            self._left_body_resistance= sum(map(prod, zip((1, r), self._left_body_resistance_betas)))
+            self._left_body_resistance = sum(
+                map(prod, zip((1, r), self._left_body_resistance_betas))
+            )
 
     def set_left_body_reactance(
         self,
@@ -296,7 +310,9 @@ class CheckupBIA:
         if not raw or x is None:
             self._left_body_reactance = x
         else:
-            self._left_body_reactance = sum(map(prod, zip((1, x), self._left_body_reactance_betas)))
+            self._left_body_reactance = sum(
+                map(prod, zip((1, x), self._left_body_reactance_betas))
+            )
 
     def set_right_arm_resistance(
         self,
@@ -315,9 +331,11 @@ class CheckupBIA:
             is the value raw or corrected?
         """
         if not raw or r is None:
-            self._right_arm_resistance= r
+            self._right_arm_resistance = r
         else:
-            self._right_arm_resistance= sum(map(prod, zip((1, r), self._right_arm_resistance_betas)))
+            self._right_arm_resistance = sum(
+                map(prod, zip((1, r), self._right_arm_resistance_betas))
+            )
 
     def set_right_arm_reactance(
         self,
@@ -338,7 +356,9 @@ class CheckupBIA:
         if not raw or x is None:
             self._right_arm_reactance = x
         else:
-            self._right_arm_reactance = sum(map(prod, zip((1, x), self._right_arm_reactance_betas)))
+            self._right_arm_reactance = sum(
+                map(prod, zip((1, x), self._right_arm_reactance_betas))
+            )
 
     def set_right_leg_resistance(
         self,
@@ -357,9 +377,11 @@ class CheckupBIA:
             is the value raw or corrected?
         """
         if not raw or r is None:
-            self._right_leg_resistance= r
+            self._right_leg_resistance = r
         else:
-            self._right_leg_resistance= sum(map(prod, zip((1, r), self._right_leg_resistance_betas)))
+            self._right_leg_resistance = sum(
+                map(prod, zip((1, r), self._right_leg_resistance_betas))
+            )
 
     def set_right_leg_reactance(
         self,
@@ -380,7 +402,9 @@ class CheckupBIA:
         if not raw or x is None:
             self._right_leg_reactance = x
         else:
-            self._right_leg_reactance = sum(map(prod, zip((1, x), self._right_leg_reactance_betas)))
+            self._right_leg_reactance = sum(
+                map(prod, zip((1, x), self._right_leg_reactance_betas))
+            )
 
     def set_right_trunk_resistance(
         self,
@@ -399,9 +423,11 @@ class CheckupBIA:
             is the value raw or corrected?
         """
         if not raw or r is None:
-            self._right_trunk_resistance= r
+            self._right_trunk_resistance = r
         else:
-            self._right_trunk_resistance= sum(map(prod, zip((1, r), self._right_trunk_resistance_betas)))
+            self._right_trunk_resistance = sum(
+                map(prod, zip((1, r), self._right_trunk_resistance_betas))
+            )
 
     def set_right_trunk_reactance(
         self,
@@ -422,7 +448,9 @@ class CheckupBIA:
         if not raw or x is None:
             self._right_trunk_reactance = x
         else:
-            self._right_trunk_reactance = sum(map(prod, zip((1, x), self._right_trunk_reactance_betas)))
+            self._right_trunk_reactance = sum(
+                map(prod, zip((1, x), self._right_trunk_reactance_betas))
+            )
 
     def set_right_body_resistance(
         self,
@@ -441,9 +469,11 @@ class CheckupBIA:
             is the value raw or corrected?
         """
         if not raw or r is None:
-            self._right_body_resistance= r
+            self._right_body_resistance = r
         else:
-            self._right_body_resistance= sum(map(prod, zip((1, r), self._right_body_resistance_betas)))
+            self._right_body_resistance = sum(
+                map(prod, zip((1, r), self._right_body_resistance_betas))
+            )
 
     def set_right_body_reactance(
         self,
@@ -464,7 +494,9 @@ class CheckupBIA:
         if not raw or x is None:
             self._right_body_reactance = x
         else:
-            self._right_body_reactance = sum(map(prod, zip((1, x), self._right_body_reactance_betas)))
+            self._right_body_reactance = sum(
+                map(prod, zip((1, x), self._right_body_reactance_betas))
+            )
 
     @property
     def age(self):
@@ -489,7 +521,7 @@ class CheckupBIA:
     @property
     def left_arm_resistance(self):
         """the left arm resistance in Ohm"""
-        return self._left_arm_r
+        return self._left_arm_resistance
 
     @property
     def left_arm_reactance(self):
@@ -499,7 +531,7 @@ class CheckupBIA:
     @property
     def left_leg_resistance(self):
         """the left leg resistance in Ohm"""
-        return self._left_leg_r
+        return self._left_leg_resistance
 
     @property
     def left_leg_reactance(self):
@@ -509,7 +541,7 @@ class CheckupBIA:
     @property
     def left_trunk_resistance(self):
         """the left trunk resistance in Ohm"""
-        return self._left_trunk_r
+        return self._left_trunk_resistance
 
     @property
     def left_trunk_reactance(self):
@@ -519,7 +551,7 @@ class CheckupBIA:
     @property
     def left_body_resistance(self):
         """the left body resistance in Ohm"""
-        return self._left_body_r
+        return self._left_body_resistance
 
     @property
     def left_body_reactance(self):
@@ -529,7 +561,7 @@ class CheckupBIA:
     @property
     def right_arm_resistance(self):
         """the right arm resistance in Ohm"""
-        return self._right_arm_r
+        return self._right_arm_resistance
 
     @property
     def right_arm_reactance(self):
@@ -539,7 +571,7 @@ class CheckupBIA:
     @property
     def right_leg_resistance(self):
         """the right leg resistance in Ohm"""
-        return self._right_leg_r
+        return self._right_leg_resistance
 
     @property
     def right_leg_reactance(self):
@@ -549,7 +581,7 @@ class CheckupBIA:
     @property
     def right_trunk_resistance(self):
         """the right trunk resistance in Ohm"""
-        return self._right_trunk_r
+        return self._right_trunk_resistance
 
     @property
     def right_trunk_reactance(self):
@@ -559,7 +591,7 @@ class CheckupBIA:
     @property
     def right_body_resistance(self):
         """the right body resistance in Ohm"""
-        return self._right_body_r
+        return self._right_body_resistance
 
     @property
     def right_body_reactance(self):
@@ -571,28 +603,36 @@ class CheckupBIA:
         """return the left arm resistance directly measured from sensors in Ohm"""
         if self.left_arm_resistance is None:
             return None
-        return (self.left_arm_resistance- self._left_arm_resistance_betas[0]) / self._left_arm_resistance_betas[1]
+        return (
+            self.left_arm_resistance - self._left_arm_resistance_betas[0]
+        ) / self._left_arm_resistance_betas[1]
 
     @property
     def left_arm_reactance_raw(self):
         """return the left arm reactance directly measured from sensors in Ohm"""
         if self.left_arm_reactance is None:
             return None
-        return (self.left_arm_reactance - self._left_arm_reactance_betas[0]) / self._left_arm_reactance_betas[1]
+        return (
+            self.left_arm_reactance - self._left_arm_reactance_betas[0]
+        ) / self._left_arm_reactance_betas[1]
 
     @property
     def left_leg_resistance_raw(self):
         """return the left leg resistance directly measured from sensors in Ohm"""
         if self.left_leg_resistance is None:
             return None
-        return (self.left_leg_resistance- self._left_leg_resistance_betas[0]) / self._left_leg_resistance_betas[1]
+        return (
+            self.left_leg_resistance - self._left_leg_resistance_betas[0]
+        ) / self._left_leg_resistance_betas[1]
 
     @property
     def left_leg_reactance_raw(self):
         """return the left leg reactance directly measured from sensors in Ohm"""
         if self.left_leg_reactance is None:
             return None
-        return (self.left_leg_reactance - self._left_leg_reactance_betas[0]) / self._left_leg_reactance_betas[1]
+        return (
+            self.left_leg_reactance - self._left_leg_reactance_betas[0]
+        ) / self._left_leg_reactance_betas[1]
 
     @property
     def left_trunk_resistance_raw(self):
@@ -600,7 +640,7 @@ class CheckupBIA:
         if self.left_trunk_resistance is None:
             return None
         return (
-            self.left_trunk_resistance- self._left_trunk_resistance_betas[0]
+            self.left_trunk_resistance - self._left_trunk_resistance_betas[0]
         ) / self._left_trunk_resistance_betas[1]
 
     @property
@@ -618,7 +658,7 @@ class CheckupBIA:
         if self.left_body_resistance is None:
             return None
         return (
-            self.left_body_resistance- self._left_body_resistance_betas[0]
+            self.left_body_resistance - self._left_body_resistance_betas[0]
         ) / self._left_body_resistance_betas[1]
 
     @property
@@ -636,7 +676,7 @@ class CheckupBIA:
         if self.right_arm_resistance is None:
             return None
         return (
-            self.right_arm_resistance- self._right_arm_resistance_betas[0]
+            self.right_arm_resistance - self._right_arm_resistance_betas[0]
         ) / self._right_arm_resistance_betas[1]
 
     @property
@@ -654,7 +694,7 @@ class CheckupBIA:
         if self.right_leg_resistance is None:
             return None
         return (
-            self.right_leg_resistance- self._right_leg_resistance_betas[0]
+            self.right_leg_resistance - self._right_leg_resistance_betas[0]
         ) / self._right_leg_resistance_betas[1]
 
     @property
@@ -672,7 +712,7 @@ class CheckupBIA:
         if self.right_trunk_resistance is None:
             return None
         return (
-            self.right_trunk_resistance- self._right_trunk_resistance_betas[0]
+            self.right_trunk_resistance - self._right_trunk_resistance_betas[0]
         ) / self._right_trunk_resistance_betas[1]
 
     @property
@@ -690,7 +730,7 @@ class CheckupBIA:
         if self.right_body_resistance is None:
             return None
         return (
-            self.right_body_resistance- self._right_body_resistance_betas[0]
+            self.right_body_resistance - self._right_body_resistance_betas[0]
         ) / self._right_body_resistance_betas[1]
 
     @property
@@ -735,84 +775,126 @@ class CheckupBIA:
         """return the left trunk impedance in Ohm"""
         if self.left_trunk_resistance is None or self.left_trunk_reactance is None:
             return None
-        return float((self.left_trunk_resistance**2 + self.left_trunk_reactance**2) ** 0.5)
+        return float(
+            (self.left_trunk_resistance**2 + self.left_trunk_reactance**2) ** 0.5
+        )
 
     @property
     def left_trunk_impedance_raw(self):
         """return the left trunk impedance in Ohm from raw electric data"""
-        if self.left_trunk_resistance_raw is None or self.left_trunk_reactance_raw is None:
+        if (
+            self.left_trunk_resistance_raw is None
+            or self.left_trunk_reactance_raw is None
+        ):
             return None
-        return (self.left_trunk_resistance_raw**2 + self.left_trunk_reactance_raw**2) ** 0.5
+        return (
+            self.left_trunk_resistance_raw**2 + self.left_trunk_reactance_raw**2
+        ) ** 0.5
 
     @property
     def left_body_impedance(self):
         """return the left body impedance in Ohm"""
         if self.left_body_resistance is None or self.left_body_reactance is None:
             return None
-        return float((self.left_body_resistance**2 + self.left_body_reactance**2) ** 0.5)
+        return float(
+            (self.left_body_resistance**2 + self.left_body_reactance**2) ** 0.5
+        )
 
     @property
     def left_body_impedance_raw(self):
         """return the left body impedance in Ohm from raw electric data"""
-        if self.left_body_resistance_raw is None or self.left_body_reactance_raw is None:
+        if (
+            self.left_body_resistance_raw is None
+            or self.left_body_reactance_raw is None
+        ):
             return None
-        return (self.left_body_resistance_raw**2 + self.left_body_reactance_raw**2) ** 0.5
+        return (
+            self.left_body_resistance_raw**2 + self.left_body_reactance_raw**2
+        ) ** 0.5
 
     @property
     def right_arm_impedance(self):
         """return the right arm impedance in Ohm"""
         if self.right_arm_resistance is None or self.right_arm_reactance is None:
             return None
-        return float((self.right_arm_resistance**2 + self.right_arm_reactance**2) ** 0.5)
+        return float(
+            (self.right_arm_resistance**2 + self.right_arm_reactance**2) ** 0.5
+        )
 
     @property
     def right_arm_impedance_raw(self):
         """return the right arm impedance in Ohm from raw electric data"""
-        if self.right_arm_resistance_raw is None or self.right_arm_reactance_raw is None:
+        if (
+            self.right_arm_resistance_raw is None
+            or self.right_arm_reactance_raw is None
+        ):
             return None
-        return (self.right_arm_resistance_raw**2 + self.right_arm_reactance_raw**2) ** 0.5
+        return (
+            self.right_arm_resistance_raw**2 + self.right_arm_reactance_raw**2
+        ) ** 0.5
 
     @property
     def right_leg_impedance(self):
         """return the right leg impedance in Ohm"""
         if self.right_leg_resistance is None or self.right_leg_reactance is None:
             return None
-        return float((self.right_leg_resistance**2 + self.right_leg_reactance**2) ** 0.5)
+        return float(
+            (self.right_leg_resistance**2 + self.right_leg_reactance**2) ** 0.5
+        )
 
     @property
     def right_leg_impedance_raw(self):
         """return the right leg impedance in Ohm from raw electric data"""
-        if self.right_leg_resistance_raw is None or self.right_leg_reactance_raw is None:
+        if (
+            self.right_leg_resistance_raw is None
+            or self.right_leg_reactance_raw is None
+        ):
             return None
-        return (self.right_leg_resistance_raw**2 + self.right_leg_reactance_raw**2) ** 0.5
+        return (
+            self.right_leg_resistance_raw**2 + self.right_leg_reactance_raw**2
+        ) ** 0.5
 
     @property
     def right_trunk_impedance(self):
         """return the right trunk impedance in Ohm"""
         if self.right_trunk_resistance is None or self.right_trunk_reactance is None:
             return None
-        return float((self.right_trunk_resistance**2 + self.right_trunk_reactance**2) ** 0.5)
+        return float(
+            (self.right_trunk_resistance**2 + self.right_trunk_reactance**2) ** 0.5
+        )
 
     @property
     def right_trunk_impedance_raw(self):
         """return the right trunk impedance in Ohm from raw electric data"""
-        if self.right_trunk_resistance_raw is None or self.right_trunk_reactance_raw is None:
+        if (
+            self.right_trunk_resistance_raw is None
+            or self.right_trunk_reactance_raw is None
+        ):
             return None
-        return (self.right_trunk_resistance_raw**2 + self.right_trunk_reactance_raw**2) ** 0.5
+        return (
+            self.right_trunk_resistance_raw**2 + self.right_trunk_reactance_raw**2
+        ) ** 0.5
 
     @property
     def right_body_impedance(self):
         """return the right body impedance in Ohm"""
         if self.right_body_resistance is None or self.right_body_reactance is None:
             return None
-        return float((self.right_body_resistance**2 + self.right_body_reactance**2) ** 0.5)
+        return float(
+            (self.right_body_resistance**2 + self.right_body_reactance**2) ** 0.5
+        )
 
     @property
     def right_body_impedance_raw(self):
         """return the right body impedance in Ohm from raw electric data"""
-        if self.right_body_resistance_raw is None or self.right_body_reactance_raw is None:
+        if (
+            self.right_body_resistance_raw is None
+            or self.right_body_reactance_raw is None
+        ):
             return None
-        return (self.right_body_resistance_raw**2 + self.right_body_reactance_raw**2) ** 0.5
+        return (
+            self.right_body_resistance_raw**2 + self.right_body_reactance_raw**2
+        ) ** 0.5
 
     @property
     def left_arm_phaseangle(self):
@@ -822,7 +904,9 @@ class CheckupBIA:
     @property
     def left_arm_phaseangle_raw(self):
         """return the left arm phase angle from raw electric data in degrees"""
-        return self._phaseangle_deg(self.left_arm_resistance_raw, self.left_arm_reactance_raw)
+        return self._phaseangle_deg(
+            self.left_arm_resistance_raw, self.left_arm_reactance_raw
+        )
 
     @property
     def left_leg_phaseangle(self):
@@ -832,17 +916,23 @@ class CheckupBIA:
     @property
     def left_leg_phaseangle_raw(self):
         """return the left leg phase angle from raw electric data in degrees"""
-        return self._phaseangle_deg(self.left_leg_resistance_raw, self.left_leg_reactance_raw)
+        return self._phaseangle_deg(
+            self.left_leg_resistance_raw, self.left_leg_reactance_raw
+        )
 
     @property
     def left_trunk_phaseangle(self):
         """return the left trunk phase angle in degrees"""
-        return self._phaseangle_deg(self.left_trunk_resistance, self.left_trunk_reactance)
+        return self._phaseangle_deg(
+            self.left_trunk_resistance, self.left_trunk_reactance
+        )
 
     @property
     def left_trunk_phaseangle_raw(self):
         """return the left trunk phase angle from raw electric data in degrees"""
-        return self._phaseangle_deg(self.left_trunk_resistance_raw, self.left_trunk_reactance_raw)
+        return self._phaseangle_deg(
+            self.left_trunk_resistance_raw, self.left_trunk_reactance_raw
+        )
 
     @property
     def left_body_phaseangle(self):
@@ -852,7 +942,9 @@ class CheckupBIA:
     @property
     def left_body_phaseangle_raw(self):
         """return the left body phase angle from raw electric datain degrees"""
-        return self._phaseangle_deg(self.left_body_resistance_raw, self.left_body_reactance_raw)
+        return self._phaseangle_deg(
+            self.left_body_resistance_raw, self.left_body_reactance_raw
+        )
 
     @property
     def right_arm_phaseangle(self):
@@ -862,7 +954,9 @@ class CheckupBIA:
     @property
     def right_arm_phaseangle_raw(self):
         """return the right arm phase angle from raw electric datain degrees"""
-        return self._phaseangle_deg(self.right_arm_resistance_raw, self.right_arm_reactance_raw)
+        return self._phaseangle_deg(
+            self.right_arm_resistance_raw, self.right_arm_reactance_raw
+        )
 
     @property
     def right_leg_phaseangle(self):
@@ -872,27 +966,37 @@ class CheckupBIA:
     @property
     def right_leg_phaseangle_raw(self):
         """return the right leg phase angle from raw electric datain degrees"""
-        return self._phaseangle_deg(self.right_leg_resistance_raw, self.right_leg_reactance_raw)
+        return self._phaseangle_deg(
+            self.right_leg_resistance_raw, self.right_leg_reactance_raw
+        )
 
     @property
     def right_trunk_phaseangle(self):
         """return the right trunk phase angle in degrees"""
-        return self._phaseangle_deg(self.right_trunk_resistance, self.right_trunk_reactance)
+        return self._phaseangle_deg(
+            self.right_trunk_resistance, self.right_trunk_reactance
+        )
 
     @property
     def right_trunk_phaseangle_raw(self):
         """return the right trunk phase angle from raw electric datain degrees"""
-        return self._phaseangle_deg(self.right_trunk_resistance_raw, self.right_trunk_reactance_raw)
+        return self._phaseangle_deg(
+            self.right_trunk_resistance_raw, self.right_trunk_reactance_raw
+        )
 
     @property
     def right_body_phaseangle(self):
         """return the right body phase angle in degrees"""
-        return self._phaseangle_deg(self.right_body_resistance, self.right_body_reactance)
+        return self._phaseangle_deg(
+            self.right_body_resistance, self.right_body_reactance
+        )
 
     @property
     def right_body_phaseangle_raw(self):
         """return the right body phase angle from raw electric datain degrees"""
-        return self._phaseangle_deg(self.right_body_resistance_raw, self.right_body_reactance_raw)
+        return self._phaseangle_deg(
+            self.right_body_resistance_raw, self.right_body_reactance_raw
+        )
 
     def is_male(self):
         """return True if the user is declared as male"""
@@ -1224,8 +1328,8 @@ class CheckupBIA:
             return None
         return float(
             2
-            * (self.left_trunk_resistance+ self.right_trunk_resistance)  # type: ignore
-            / (self.left_arm_resistance+ self.left_leg_resistance+ self.right_arm_resistance+ self.right_leg_resistance)  # type: ignore
+            * (self.left_trunk_resistance + self.right_trunk_resistance)  # type: ignore
+            / (self.left_arm_resistance + self.left_leg_resistance + self.right_arm_resistance + self.right_leg_resistance)  # type: ignore
         )
 
     @property
@@ -1251,7 +1355,11 @@ class CheckupBIA:
     @property
     def left_arm_fatfreemass(self):
         """return the left arm fat free mass in kg"""
-        if any(self._nones(self.left_arm_resistance_raw, self._trunk_appendicular_index_raw)):
+        if any(
+            self._nones(
+                self.left_arm_resistance_raw, self._trunk_appendicular_index_raw
+            )
+        ):
             return None
         return float(
             +0.676
@@ -1275,7 +1383,11 @@ class CheckupBIA:
     @property
     def right_arm_fatfreemass(self):
         """return the right arm fat free mass in kg"""
-        if any(self._nones(self.right_arm_resistance_raw, self._trunk_appendicular_index_raw)):
+        if any(
+            self._nones(
+                self.right_arm_resistance_raw, self._trunk_appendicular_index_raw
+            )
+        ):
             return None
         return float(
             +0.676
@@ -1301,7 +1413,9 @@ class CheckupBIA:
         """return the left leg fat free mass in kg"""
         if any(
             self._nones(
-                self.left_leg_resistance_raw, self._trunk_appendicular_index_raw, self.height
+                self.left_leg_resistance_raw,
+                self._trunk_appendicular_index_raw,
+                self.height,
             )
         ):
             return None
@@ -1330,7 +1444,9 @@ class CheckupBIA:
         """return the right leg fat free mass in kg"""
         if any(
             self._nones(
-                self.right_leg_resistance_raw, self._trunk_appendicular_index_raw, self.height
+                self.right_leg_resistance_raw,
+                self._trunk_appendicular_index_raw,
+                self.height,
             )
         ):
             return None
@@ -1393,7 +1509,7 @@ class CheckupBIA:
         return float(
             -26.788
             + 0.978 * self.bmi
-            + 0.2225 * (self.left_trunk_resistance+ self.right_trunk_resistance)  # type: ignore
+            + 0.2225 * (self.left_trunk_resistance + self.right_trunk_resistance)  # type: ignore
             + 0.045 * self.age
         )
 
