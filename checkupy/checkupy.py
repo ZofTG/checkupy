@@ -3,10 +3,9 @@
 #! IMPORTS
 
 
-from math import atan, exp, log, pi, sumprod
-from typing import Literal
 from copy import deepcopy
-
+from math import atan, exp, log, pi, prod
+from typing import Literal
 
 __all__ = ["CheckupBIA"]
 
@@ -380,169 +379,113 @@ class BIAInput:
     def apply_orthostatic_correction(self):
         """If not applied, apply orthostatic correction to the stored electrical data"""
         if not self.is_corrected():
+
+            def lsq(x, y):
+                return sum(list(map(lambda x: prod(x), list(zip([1, x], y)))))
+
             self.set_left_arm_resistance(
-                sumprod(
-                    [1, self.left_arm_resistance],
-                    self._left_arm_resistance_betas,
-                )
+                lsq(self.left_arm_resistance, self._left_arm_resistance_betas)
             )
             self.set_left_arm_reactance(
-                sumprod(
-                    [1, self.left_arm_reactance],
-                    self._left_arm_reactance_betas,
-                )
+                lsq(self.left_arm_reactance, self._left_arm_reactance_betas)
             )
             self.set_left_leg_resistance(
-                sumprod(
-                    [1, self.left_leg_resistance],
-                    self._left_leg_resistance_betas,
-                )
+                lsq(self.left_leg_resistance, self._left_leg_resistance_betas)
             )
             self.set_left_leg_reactance(
-                sumprod(
-                    [1, self.left_leg_reactance],
-                    self._left_leg_reactance_betas,
-                )
+                lsq(self.left_leg_reactance, self._left_leg_reactance_betas)
             )
             self.set_left_trunk_resistance(
-                sumprod(
-                    [1, self.left_trunk_resistance],
-                    self._left_trunk_resistance_betas,
-                )
+                lsq(self.left_trunk_resistance, self._left_trunk_resistance_betas)
             )
             self.set_left_trunk_reactance(
-                sumprod(
-                    [1, self.left_trunk_reactance],
-                    self._left_trunk_reactance_betas,
-                )
+                lsq(self.left_trunk_reactance, self._left_trunk_reactance_betas)
             )
             self.set_left_body_resistance(
-                sumprod(
-                    [1, self.left_body_resistance],
-                    self._left_body_resistance_betas,
-                )
+                lsq(self.left_body_resistance, self._left_body_resistance_betas)
             )
             self.set_left_body_reactance(
-                sumprod(
-                    [1, self.left_body_reactance],
-                    self._left_body_reactance_betas,
-                )
+                lsq(self.left_body_reactance, self._left_body_reactance_betas)
             )
             self.set_right_arm_resistance(
-                sumprod(
-                    [1, self.right_arm_resistance],
-                    self._right_arm_resistance_betas,
-                )
+                lsq(self.right_arm_resistance, self._right_arm_resistance_betas)
             )
             self.set_right_arm_reactance(
-                sumprod(
-                    [1, self.right_arm_reactance],
-                    self._right_arm_reactance_betas,
-                )
+                lsq(self.right_arm_reactance, self._right_arm_reactance_betas)
             )
             self.set_right_leg_resistance(
-                sumprod(
-                    [1, self.right_leg_resistance],
-                    self._right_leg_resistance_betas,
-                )
+                lsq(self.right_leg_resistance, self._right_leg_resistance_betas)
             )
             self.set_right_leg_reactance(
-                sumprod(
-                    [1, self.right_leg_reactance],
-                    self._right_leg_reactance_betas,
-                )
+                lsq(self.right_leg_reactance, self._right_leg_reactance_betas)
             )
             self.set_right_trunk_resistance(
-                sumprod(
-                    [1, self.right_trunk_resistance],
-                    self._right_trunk_resistance_betas,
-                )
+                lsq(self.right_trunk_resistance, self._right_trunk_resistance_betas)
             )
             self.set_right_trunk_reactance(
-                sumprod(
-                    [1, self.right_trunk_reactance],
-                    self._right_trunk_reactance_betas,
-                )
+                lsq(self.right_trunk_reactance, self._right_trunk_reactance_betas)
             )
             self.set_right_body_resistance(
-                sumprod(
-                    [1, self.right_body_resistance],
-                    self._right_body_resistance_betas,
-                )
+                lsq(self.right_body_resistance, self._right_body_resistance_betas)
             )
             self.set_right_body_reactance(
-                sumprod(
-                    [1, self.right_body_reactance],
-                    self._right_body_reactance_betas,
-                )
+                lsq(self.right_body_reactance, self._right_body_reactance_betas)
             )
 
     def remove_orthostatic_correction(self):
         """If already applied, remove orthostatic correction from electrical data"""
         if self.is_corrected():
+
+            def ilsq(x, y):
+                return (x - y[0]) / y[1]
+
             self.set_left_arm_resistance(
-                (self.left_arm_resistance - self._left_arm_resistance_betas[0])
-                / self._left_arm_resistance_betas[1]
+                ilsq(self.left_arm_resistance, self._left_arm_resistance_betas)
             )
             self.set_left_arm_reactance(
-                (self.left_arm_reactance - self._left_arm_reactance_betas[0])
-                / self._left_arm_reactance_betas[1]
+                ilsq(self.left_arm_reactance, self._left_arm_reactance_betas)
             )
             self.set_left_leg_resistance(
-                (self.left_leg_resistance - self._left_leg_resistance_betas[0])
-                / self._left_leg_resistance_betas[1]
+                ilsq(self.left_leg_resistance, self._left_leg_resistance_betas)
             )
             self.set_left_leg_reactance(
-                (self.left_leg_reactance - self._left_leg_reactance_betas[0])
-                / self._left_leg_reactance_betas[1]
+                ilsq(self.left_leg_reactance, self._left_leg_reactance_betas)
             )
             self.set_left_trunk_resistance(
-                (self.left_trunk_resistance - self._left_trunk_resistance_betas[0])
-                / self._left_trunk_resistance_betas[1]
+                ilsq(self.left_trunk_resistance, self._left_trunk_resistance_betas)
             )
             self.set_left_trunk_reactance(
-                (self.left_trunk_reactance - self._left_trunk_reactance_betas[0])
-                / self._left_trunk_reactance_betas[1]
+                ilsq(self.left_trunk_reactance, self._left_trunk_reactance_betas)
             )
             self.set_left_body_resistance(
-                (self.left_body_resistance - self._left_body_resistance_betas[0])
-                / self._left_body_resistance_betas[1]
+                ilsq(self.left_body_resistance, self._left_body_resistance_betas)
             )
             self.set_left_body_reactance(
-                (self.left_body_reactance - self._left_body_reactance_betas[0])
-                / self._left_body_reactance_betas[1]
+                ilsq(self.left_body_reactance, self._left_body_reactance_betas)
             )
             self.set_right_arm_resistance(
-                (self.right_arm_resistance - self._right_arm_resistance_betas[0])
-                / self._right_arm_resistance_betas[1]
+                ilsq(self.right_arm_resistance, self._right_arm_resistance_betas)
             )
             self.set_right_arm_reactance(
-                (self.right_arm_reactance - self._right_arm_reactance_betas[0])
-                / self._right_arm_reactance_betas[1]
+                ilsq(self.right_arm_reactance, self._right_arm_reactance_betas)
             )
             self.set_right_leg_resistance(
-                (self.right_leg_resistance - self._right_leg_resistance_betas[0])
-                / self._right_leg_resistance_betas[1]
+                ilsq(self.right_leg_resistance, self._right_leg_resistance_betas)
             )
             self.set_right_leg_reactance(
-                (self.right_leg_reactance - self._right_leg_reactance_betas[0])
-                / self._right_leg_reactance_betas[1]
+                ilsq(self.right_leg_reactance, self._right_leg_reactance_betas)
             )
             self.set_right_trunk_resistance(
-                (self.right_trunk_resistance - self._right_trunk_resistance_betas[0])
-                / self._right_trunk_resistance_betas[1]
+                ilsq(self.right_trunk_resistance, self._right_trunk_resistance_betas)
             )
             self.set_right_trunk_reactance(
-                (self.right_trunk_reactance - self._right_trunk_reactance_betas[0])
-                / self._right_trunk_reactance_betas[1]
+                ilsq(self.right_trunk_reactance, self._right_trunk_reactance_betas)
             )
             self.set_right_body_resistance(
-                (self.right_body_resistance - self._right_body_resistance_betas[0])
-                / self._right_body_resistance_betas[1]
+                ilsq(self.right_body_resistance, self._right_body_resistance_betas)
             )
             self.set_right_body_reactance(
-                (self.right_body_reactance - self._right_body_reactance_betas[0])
-                / self._right_body_reactance_betas[1]
+                ilsq(self.right_body_reactance, self._right_body_reactance_betas)
             )
 
     def copy(self):
