@@ -878,7 +878,7 @@ class Fitness(BIAInput):
     @property
     def total_body_intracellularwater(self):
         """return the intracellular water in liters"""
-        return self.total_body_water - self.total_body_intracellularwater
+        return self.total_body_water - self.total_body_extracellularwater
 
     @property
     def total_body_intracellularwaterperc(self):
