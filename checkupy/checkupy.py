@@ -365,7 +365,8 @@ class BIAInput:
         return {
             i: getattr(self, i)
             for i in dir(self)
-            if i.split("_")[0] not in ["set", "to", "", "is"]
+            if i.split("_")[0]
+            not in ["set", "to", "", "is", "fitness", "standard", "copy", "apply"]
         }
 
     def is_male(self):
@@ -1006,7 +1007,7 @@ class Fitness(BIAInput):
         return self.total_body_othertissuesmass / self.weight * 100
 
     @property
-    def basalmetabolicrate(self):
+    def total_body_basalmetabolicrate(self):
         """return the basal metabolic rate in kcal"""
         return float(
             -340.40464
@@ -1358,7 +1359,7 @@ class Standard(Fitness):
         )
 
     @property
-    def basalmetabolicrate(self):
+    def total_body_basalmetabolicrate(self):
         """
         return the basal metabolic rate in kcal
 
@@ -1644,7 +1645,7 @@ class CheckupBIA:
 
     def to_dict(self):
         """return all the measures as dictionary"""
-        reserved = ["set", "to", "", "is", "fitness", "standard"]
+        reserved = ["set", "to", "", "is", "fitness", "standard", "copy", "apply"]
         out = {
             i: getattr(self, i) for i in dir(self) if i.split("_")[0] not in reserved
         }
