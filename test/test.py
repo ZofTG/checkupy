@@ -33,7 +33,7 @@ def read_txt(file: str):
                 the datetime object of the test.
     """
     # read the file
-    with open(file) as buf:
+    with open(file, encoding="utf8") as buf:
         lines = [i.split("\t") for i in buf.readlines()]
 
     # adjust the data
