@@ -499,9 +499,9 @@ class BIAInput:
         pha = {}
         valid = 1
         for side in ["left", "right"]:
-            res = getattr(self, f"_{side}_body_resistance")
-            rea = getattr(self, "_{side}_body_reactance")
-            pha[side] = getattr(self, "_{side}_body_phaseangle")
+            res = getattr(self, f"{side}_body_resistance")
+            rea = getattr(self, f"{side}_body_reactance")
+            pha[side] = getattr(self, f"{side}_body_phaseangle")
             valid *= res / hgt >= 200
             valid *= res / hgt <= 600
             valid *= rea / hgt >= 10
