@@ -493,6 +493,24 @@ class BIAInput:
         """create a copy of the object"""
         return deepcopy(self)
 
+    def is_valid(self):
+        """returns True if the measure is valid from an electrical standpoint"""
+        hgt = self.height / 100
+        pha = {}
+        valid = 1
+        for side in ["left", "right"]:
+            res = getattr(self, f"{side}_body_resistance")
+            rea = getattr(self, "{side}_body_reactance")
+            pha[side] = getattr(self, "{side}_body_phaseangle")
+            valid *= res / hgt >= 200
+            valid *= res / hgt <= 600
+            valid *= rea / hgt >= 10
+            valid *= rea / hgt <= 60
+            valid *= pha[side] >= 3
+            valid *= pha[side] <= 12
+        valid *= abs(pha["left"] - pha["right"]) <= 1
+        return bool(valid)
+
     @property
     def _trunk_appendicular_index(self):
         """return the ratio between the trunk and appendicular resistance"""

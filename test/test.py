@@ -95,6 +95,7 @@ if __name__ == "__main__":
         print("\n")
         print(f"userid: {user}")
         print(f"datetime: {date}")
+        print(f"valid: {bia.is_valid()}")
         for i, v in bia.to_dict().items():
             if isinstance(v, tuple):
                 t = f"{v[0]:0.3f} ({(v[1]*100):0.1f}%)"
