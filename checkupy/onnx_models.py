@@ -61,7 +61,8 @@ class OnnxModel:
                 if isinstance(data[i], (pd.DataFrame, pd.Series)):
                     vals.append(data[i].values.astype(np.float32).flatten())
                 else:
-                    vals.append(data[i].astype(np.float32).flatten())
+                    arr = np.atleast_1d(data[i]).astype(np.float32).flatten()
+                    vals.append(arr)
             vals = np.concatenate([i.reshape(-1, 1) for i in vals], axis=1)
             source = "dict"
 

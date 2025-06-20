@@ -1704,7 +1704,7 @@ class Inbody(Fitness):
 
         # get the predictions
         inputs = {i: getattr(self, i) for i in self._onnx_model.input_labels}
-        self._preds = self._onnx_model(inputs)
+        self._preds = self._onnx_model(inputs)  # type: ignore
 
     @property
     def total_body_water(self):
