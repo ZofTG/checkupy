@@ -1590,7 +1590,7 @@ class Standard(Fitness):
 class Inbody(Fitness):
 
     _onnx_model: OnnxModel
-    _model_path = join(dirname(__file__), "assets", "model2_200x4_vs_inbody.onnx")
+    _model_path = join(dirname(__file__), "assets", "model2_400x4_vs_inbody.onnx")
     _preds: dict[str, float]
 
     def __init__(
