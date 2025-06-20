@@ -369,7 +369,17 @@ class BIAInput:
             i: getattr(self, i)
             for i in dir(self)
             if i.split("_")[0]
-            not in ["set", "to", "", "is", "fitness", "standard", "copy", "apply"]
+            not in [
+                "set",
+                "to",
+                "",
+                "is",
+                "fitness",
+                "standard",
+                "inbody",
+                "copy",
+                "apply",
+            ]
         }
 
     def is_male(self):
@@ -1675,6 +1685,8 @@ class Inbody(Fitness):
                 "total_body_skeletalmusclemassperc",
                 "total_body_skeletalmusclemassindex",
                 "left_arm_fatmass",
+                "left_arm_fatmassperc",
+                "left_arm_fatfreemass",
                 "left_arm_fatfreemassperc",
                 "left_leg_fatmass",
                 "left_leg_fatmassperc",
@@ -1706,6 +1718,10 @@ class Inbody(Fitness):
         inputs = {i: getattr(self, i) for i in self._onnx_model.input_labels}
         self._preds = self._onnx_model(inputs)  # type: ignore
 
+    def to_dict(self):
+        out = super().to_dict()
+        out["total_body_phaseanglecorrected"] = self.total_body_phaseanglecorrected
+
     @property
     def total_body_water(self):
         """return the total body water in liters and as percentage
@@ -1736,6 +1752,10 @@ class Inbody(Fitness):
     def total_body_basalmetabolicrate(self):
         """return the basal metabolic rate in kcal"""
         return float(self._preds["total_body_basalmetabolicrate"])
+
+    @property
+    def total_body_phaseanglecorrected(self):
+        return self._preds["total_body_phaseanglecorrected"]
 
     @property
     def total_body_minerals(self):
@@ -1797,10 +1817,6 @@ class Inbody(Fitness):
     def total_trunk_fatmass(self):
         """return the trunk fat mass in kg"""
         return float(self._preds["total_trunk_fatmass"])
-
-    @property
-    def total_body_phaseanglecorrected(self):
-        return self._preds["total_body_phaseanglecorrected"]
 
 
 class CheckupBIA:
