@@ -15,6 +15,9 @@ classifiers = [
 version = "12"
 dynamic = ["readme", "dependencies"]
 
+[tool.setuptools.package-data]
+"checkupy" = ["assets/*.onnx"]
+
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
 readme = {file = "README.html"}
