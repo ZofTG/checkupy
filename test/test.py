@@ -3,6 +3,7 @@
 import sys
 from datetime import datetime
 from os.path import dirname, join
+import numpy as np
 
 sys.path += [dirname(dirname(__file__))]
 
@@ -100,5 +101,4 @@ if __name__ == "__main__":
             if isinstance(v, dict):
                 print("\n\t" + i)
                 for key, val in v.items():
-                    if isinstance(val, (int, float)):
-                        print(f"\t\t{key}: {val}")
+                    print(f"\t\t{key}: {np.squeeze(val)}")

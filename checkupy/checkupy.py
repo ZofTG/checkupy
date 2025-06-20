@@ -379,6 +379,7 @@ class BIAInput:
                 "inbody",
                 "copy",
                 "apply",
+                "remove",
             ]
         }
 
@@ -1717,10 +1718,6 @@ class Inbody(Fitness):
         # get the predictions
         inputs = {i: getattr(self, i) for i in self._onnx_model.input_labels}
         self._preds = self._onnx_model(inputs)  # type: ignore
-
-    def to_dict(self):
-        out = super().to_dict()
-        out["total_body_phaseanglecorrected"] = self.total_body_phaseanglecorrected
 
     @property
     def total_body_water(self):
