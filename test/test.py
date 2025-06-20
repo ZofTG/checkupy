@@ -74,13 +74,13 @@ def read_txt(file: str):
         time = obj["test_time"][i]
         test_date = datetime.strptime("-".join([date, time]), "%d/%m/%Y-%H:%M:%S")
         bia = {
-            j: v[i]
+            j.replace("_r", "_resistance").replace("_x", "_reactance"): v[i]
             for j, v in obj.items()
             if j not in ["userid", "test_date", "test_time"]
             and not j.startswith("upper")
             and not j.startswith("lower")
         }
-        bia = CheckupBIA(**bia, raw_electric_data=True)
+        bia = CheckupBIA(**bia, corrected_electrical_values=False)
         lines += [(bia, str(user), test_date)]
 
     # return
@@ -95,14 +95,10 @@ if __name__ == "__main__":
         print("\n")
         print(f"userid: {user}")
         print(f"datetime: {date}")
-        print(f"valid: {bia.is_valid()}")
+        print(f"valid: {bia.fitness.is_valid()}")
         for i, v in bia.to_dict().items():
-            if isinstance(v, tuple):
-                t = f"{v[0]:0.3f} ({(v[1]*100):0.1f}%)"
-            elif isinstance(v, str):
-                t = v
-            elif v is None:
-                t = ""
-            else:
-                t = f"{v:0.3f}"
-            print(f"{i}: {t}")
+            if isinstance(v, dict):
+                print("\n\t" + i)
+                for key, val in v.items():
+                    if isinstance(val, (int, float)):
+                        print(f"\t\t{key}: {val}")

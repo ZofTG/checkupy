@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools", "wheel", "onnx", "onnxruntime", "pandas", "numpy"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -12,7 +12,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-version = "11"
+version = "12"
 dynamic = ["readme", "dependencies"]
 
 [tool.setuptools.dynamic]

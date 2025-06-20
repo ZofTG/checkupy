@@ -6,6 +6,9 @@
 from copy import deepcopy
 from math import atan, exp, log, pi, prod
 from typing import Literal
+from .onnx_models import OnnxModel
+import numpy as np
+from os.path import join, dirname
 
 __all__ = ["CheckupBIA"]
 
@@ -526,7 +529,7 @@ class BIAInput:
         return self.weight / (self.height / 100) ** 2
 
     @property
-    def ideal_weight(self):
+    def target_weight(self):
         """return the ideal weight of the user"""
         return self.bmi * (2.2 + 3.5 * (self.height / 100 - 1.5))
 
@@ -1584,10 +1587,227 @@ class Standard(Fitness):
         )
 
 
+class Inbody(Fitness):
+
+    _onnx_model: OnnxModel
+    _model_path = join(dirname(__file__), "assets", "module2_200x4_vs_inbody.onnx")
+    _preds: dict[str, float]
+
+    def __init__(
+        self,
+        age: int | float,
+        height: int,
+        weight: int | float,
+        left_arm_resistance: int | float,
+        left_arm_reactance: int | float,
+        left_leg_resistance: int | float,
+        left_leg_reactance: int | float,
+        left_body_resistance: int | float,
+        left_body_reactance: int | float,
+        right_arm_resistance: int | float,
+        right_arm_reactance: int | float,
+        right_leg_resistance: int | float,
+        right_leg_reactance: int | float,
+        right_body_resistance: int | float,
+        right_body_reactance: int | float,
+    ):
+        super().__init__(
+            age=age,
+            sex="M",
+            height=height,
+            weight=weight,
+            left_arm_resistance=left_arm_resistance,
+            left_arm_reactance=left_arm_reactance,
+            left_leg_resistance=left_leg_resistance,
+            left_leg_reactance=left_leg_reactance,
+            left_trunk_resistance=np.nan,
+            left_trunk_reactance=np.nan,
+            left_body_resistance=left_body_resistance,
+            left_body_reactance=left_body_reactance,
+            right_arm_resistance=right_arm_resistance,
+            right_arm_reactance=right_arm_reactance,
+            right_leg_resistance=right_leg_resistance,
+            right_leg_reactance=right_leg_reactance,
+            right_trunk_resistance=np.nan,
+            right_trunk_reactance=np.nan,
+            right_body_resistance=right_body_resistance,
+            right_body_reactance=right_body_reactance,
+            corrected_electrical_values=False,
+        )
+
+        self._onnx_model = OnnxModel(
+            model_path=self._model_path,
+            input_labels=[  # order is important and defined at model creation
+                "height",
+                "weight",
+                "age",
+                "left_arm_resistance",
+                "left_arm_reactance",
+                "left_leg_resistance",
+                "left_leg_reactance",
+                "left_body_resistance",
+                "left_body_reactance",
+                "right_arm_resistance",
+                "right_arm_reactance",
+                "right_leg_resistance",
+                "right_leg_reactance",
+                "right_body_resistance",
+                "right_body_reactance",
+            ],
+            output_labels=[  # order is important and defined at model creation
+                "total_body_basalmetabolicrate",
+                "total_body_proteins",
+                "total_body_minerals",
+                "target_weight",
+                "total_body_phaseangle",
+                "total_body_phaseanglecorrected",
+                "total_body_fatmass",
+                "total_body_fatmassperc",
+                "total_body_fatmassindex",
+                "total_body_fatfreemass",
+                "total_body_fatfreemassperc",
+                "total_body_fatfreemassindex",
+                "total_body_bonemineralcontentperc",
+                "total_body_bonemineralcontent",
+                "total_body_softleanmass",
+                "total_body_softleanmassperc",
+                "total_body_skeletalmusclemass",
+                "total_body_skeletalmusclemassperc",
+                "total_body_skeletalmusclemassindex",
+                "left_arm_fatmass",
+                "left_arm_fatfreemassperc",
+                "left_leg_fatmass",
+                "left_leg_fatmassperc",
+                "left_leg_fatfreemass",
+                "left_leg_fatfreemassperc",
+                "right_arm_fatmass",
+                "right_arm_fatmassperc",
+                "right_arm_fatfreemass",
+                "right_arm_fatfreemassperc",
+                "right_leg_fatmass",
+                "right_leg_fatmassperc",
+                "right_leg_fatfreemass",
+                "right_leg_fatfreemassperc",
+                "total_trunk_fatmass",
+                "total_trunk_fatmassperc",
+                "total_trunk_fatfreemass",
+                "total_trunk_fatfreemassperc",
+                "total_body_water",
+                "total_body_waterperc",
+                "total_body_extracellularwater",
+                "total_body_extracellularwaterperc",
+                "total_body_intracellularwater",
+                "total_body_intracellularwaterperc",
+                "ecw_on_icw",
+            ],
+        )
+
+        # get the predictions
+        inputs = {i: getattr(self, i) for i in self._onnx_model.input_labels}
+        self._preds = self._onnx_model(inputs)
+
+    @property
+    def total_body_water(self):
+        """return the total body water in liters and as percentage
+        of the total body weight"""
+        return float(self._preds["total_body_water"])
+
+    @property
+    def total_body_extracellularwater(self):
+        """return the extracellular water in liters"""
+        return float(self._preds["total_body_extracellularwater"])
+
+    @property
+    def total_body_fatfreemass(self):
+        """return the free-fat mass in kg"""
+        return float(self._preds["total_body_fatfreemass"])
+
+    @property
+    def total_body_bonemineralcontent(self):
+        """return the bone mineral content in kg"""
+        return float(self._preds["total_body_bonemineralcontent"])
+
+    @property
+    def total_body_skeletalmusclemass(self):
+        """return the skeletal muscle mass in kg"""
+        return float(self._preds["total_body_skeletalmusclemass"])
+
+    @property
+    def total_body_basalmetabolicrate(self):
+        """return the basal metabolic rate in kcal"""
+        return float(self._preds["total_body_basalmetabolicrate"])
+
+    @property
+    def total_body_minerals(self):
+        """return the total body mineral content"""
+        return float(self._preds["total_body_minerals"])
+
+    @property
+    def total_body_proteins(self):
+        """return the total body proteins mass"""
+        return float(self._preds["total_body_proteins"])
+
+    @property
+    def left_arm_fatfreemass(self):
+        """return the left arm fat free mass in kg"""
+        return float(self._preds["left_arm_fatfreemass"])
+
+    @property
+    def left_arm_fatmass(self):
+        """return the left arm fat mass in kg"""
+        return float(self._preds["left_arm_fatmass"])
+
+    @property
+    def right_arm_fatfreemass(self):
+        """return the right arm fat free mass in kg"""
+        return float(self._preds["right_arm_fatfreemass"])
+
+    @property
+    def right_arm_fatmass(self):
+        """return the right arm fat mass in kg"""
+        return float(self._preds["right_arm_fatmass"])
+
+    @property
+    def left_leg_fatfreemass(self):
+        """return the left leg fat free mass in kg"""
+        return float(self._preds["left_leg_fatfreemass"])
+
+    @property
+    def left_leg_fatmass(self):
+        """return the left leg fat mass in kg and as percentage of
+        the as percentage of the total fat mass"""
+        return float(self._preds["left_leg_fatmass"])
+
+    @property
+    def right_leg_fatfreemass(self):
+        """return the right leg fat free mass in kg"""
+        return float(self._preds["right_leg_fatfreemass"])
+
+    @property
+    def right_leg_fatmass(self):
+        """return the right leg fat mass in kg"""
+        return float(self._preds["right_leg_fatmass"])
+
+    @property
+    def total_trunk_fatfreemass(self):
+        """return the trunk fat free mass in kg"""
+        return float(self._preds["total_trunk_fatfreemass"])
+
+    @property
+    def total_trunk_fatmass(self):
+        """return the trunk fat mass in kg"""
+        return float(self._preds["total_trunk_fatmass"])
+
+    @property
+    def total_body_phaseanglecorrected(self):
+        return self._preds["total_body_phaseanglecorrected"]
+
+
 class CheckupBIA:
     """BIA analysis"""
 
     _fitness: Fitness
+    _inbody: Inbody
     _standard: Standard
 
     def __init__(
@@ -1660,18 +1880,31 @@ class CheckupBIA:
             right_body_reactance=right_body_reactance,
             corrected_electrical_values=corrected_electrical_values,
         )
+        self._inbody = Inbody(
+            age=age,
+            height=height,
+            weight=weight,
+            left_arm_resistance=left_arm_resistance,
+            left_arm_reactance=left_arm_reactance,
+            left_leg_resistance=left_leg_resistance,
+            left_leg_reactance=left_leg_reactance,
+            left_body_resistance=left_body_resistance,
+            left_body_reactance=left_body_reactance,
+            right_arm_resistance=right_arm_resistance,
+            right_arm_reactance=right_arm_reactance,
+            right_leg_resistance=right_leg_resistance,
+            right_leg_reactance=right_leg_reactance,
+            right_body_resistance=right_body_resistance,
+            right_body_reactance=right_body_reactance,
+        )
 
     def to_dict(self):
         """return all the measures as dictionary"""
-        reserved = ["set", "to", "", "is", "fitness", "standard", "copy", "apply"]
-        out = {
-            i: getattr(self, i) for i in dir(self) if i.split("_")[0] not in reserved
-        }
-        out.update(
+        return dict(
             fitness=self.fitness.to_dict(),
             standard=self.standard.to_dict(),
+            inbody=self.inbody.to_dict(),
         )
-        return out
 
     @property
     def fitness(self):
@@ -1684,31 +1917,6 @@ class CheckupBIA:
         return self._standard
 
     @property
-    def bmi(self):
-        """return the user BMI"""
-        return self.weight / (self.height / 100) ** 2
-
-    @property
-    def ideal_weight(self):
-        """return the ideal weight of the user"""
-        return self.bmi * (2.2 + 3.5 * (self.height / 100 - 1.5))
-
-    @property
-    def age(self):
-        """the user age in years"""
-        return self._fitness.age
-
-    @property
-    def weight(self):
-        """the user weight in kg"""
-        return self._fitness.weight
-
-    @property
-    def height(self):
-        """the user height in cm"""
-        return self._fitness.height
-
-    @property
-    def sex(self):
-        """the user sex"""
-        return self._fitness.sex
+    def inbody(self):
+        """return the set of standard-equations based measures"""
+        return self._inbody
