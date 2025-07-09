@@ -121,7 +121,7 @@ class BIAInput:
         rea: float | int,
     ):
         """return the phase angle in degrees"""
-        return float(atan(rea / res)) * 180 / pi  # type: ignore
+        return float(atan(res / rea)) * 180 / pi  # type: ignore
 
     def set_age(self, age: int | float):
         """set the user age in years"""
