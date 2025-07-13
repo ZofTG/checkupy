@@ -1,16 +1,18 @@
 """test the BIAMeasure class"""
 
 import sys
+import itertools as it
 from datetime import datetime
 from os.path import dirname, join
 import numpy as np
+import pandas as pd
 
 sys.path += [dirname(dirname(__file__))]
 
 from checkupy import CheckupBIA
 
 
-def read_txt(file: str):
+def read_file(file: str):
     """
     import data from file.
 
@@ -34,53 +36,34 @@ def read_txt(file: str):
                 the datetime object of the test.
     """
     # read the file
-    with open(file, encoding="utf8") as buf:
-        lines = [i.split("\t") for i in buf.readlines()]
-
-    # adjust the data
-    for i in range(4):
-        for j in range(1, len(lines[i])):
-            val = lines[i][j].replace("\n", "").replace("-", "").replace(" ", "")
-            if val == "":
-                lines[i][j] = lines[i][j - 1]
-    cols = [[i[j] for i in lines] for j in range(len(lines[0]))]
-    obj = {}
-    for i in cols:
-
-        # get the header
-        i[:2] = [i[1], i[0]]
-        key = "_".join(i[:3])
-        if key.startswith("_"):
-            key = key[1:]
-        if key.endswith("_"):
-            key = key[:-1]
-        key = key.lower().replace("\n", "")
-
-        # adjust the values
-        if not key.endswith("_ph"):
-            vals = []
-            for j in i[4:]:
-                try:
-                    val = float(j)
-                except Exception:
-                    val = str(j)
-                vals += [val]
-            obj[key] = vals
+    data = pd.read_csv(file, header=[0, 1, 2, 3])
+    columns = [list(i)[:2][::-1] + [i[2]] for i in data.columns]  # type: ignore
+    columns = [
+        "_".join([j for j in i if not "unnamed" in j.lower()])
+        .lower()
+        .replace("_r", "_resistance")
+        .replace("_x", "_reactance")
+        for i in columns
+    ]
+    data.columns = pd.Index(columns)
 
     # wrap and sort the tests
     lines = []
-    for i in range(len(obj["userid"])):
-        user = obj["userid"][i]
-        date = obj["test_date"][i]
-        time = obj["test_time"][i]
+    for i, line in data.iterrows():
+        user = line["userid"]
+        date = line["test_date"]
+        time = line["test_time"]
         test_date = datetime.strptime("-".join([date, time]), "%d/%m/%Y-%H:%M:%S")
-        bia = {
-            j.replace("_r", "_resistance").replace("_x", "_reactance"): v[i]
-            for j, v in obj.items()
-            if j not in ["userid", "test_date", "test_time"]
-            and not j.startswith("upper")
-            and not j.startswith("lower")
-        }
+        bia = ["height", "weight", "age", "gender"]
+        bia += [
+            "_".join(i)
+            for i in it.product(
+                ["left", "right"],
+                ["arm", "leg", "trunk", "body"],
+                ["resistance", "reactance"],
+            )
+        ]
+        bia = {i: line[i] for i in bia}
         bia = CheckupBIA(**bia, corrected_electrical_values=False)
         lines += [(bia, str(user), test_date)]
 
@@ -92,7 +75,7 @@ if __name__ == "__main__":
 
     # open the available data
     path = dirname(__file__)
-    for bia, user, date in read_txt(join(path, "test_data.txt")):
+    for bia, user, date in read_file(join(path, "test_data.csv")):
         print("\n")
         print(f"userid: {user}")
         print(f"datetime: {date}")

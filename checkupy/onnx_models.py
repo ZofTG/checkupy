@@ -99,11 +99,12 @@ class OnnxModel:
 
 if __name__ == "__main__":
     onnx_model = OnnxModel(
-        model_path="model2_400x4_vs_inbody.onnx",
+        model_path="model2_100x2_vs_inbody.onnx",
         input_labels=[  # order is important and defined at model creation
             "height",
             "weight",
             "age",
+            "sex",
             "left_arm_resistance",
             "left_arm_reactance",
             "left_leg_resistance",

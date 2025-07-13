@@ -24,7 +24,7 @@ class BIAInput:
 
     # variables
     _age: int
-    _sex: Literal["M", "F"]
+    _gender: Literal["M", "F", "O"]
     _hcm: int
     _wgt: float
     _left_arm_resistance: int | float
@@ -66,7 +66,7 @@ class BIAInput:
     def __init__(
         self,
         age: int | float,
-        sex: Literal["M", "F"],
+        gender: Literal["M", "F", "O"],
         height: int,
         weight: int | float,
         left_arm_resistance: int | float,
@@ -88,7 +88,7 @@ class BIAInput:
         corrected_electrical_values: bool = False,
     ):
         self.set_age(age)
-        self.set_sex(sex)
+        self.set_gender(gender)
         self.set_height(height)
         self.set_weight(weight)
 
@@ -135,9 +135,9 @@ class BIAInput:
         """set the user height in cm"""
         self._hcm = int(hcm)
 
-    def set_sex(self, sex: Literal["M", "F"]):
+    def set_gender(self, gender: Literal["M", "F", "O"]):
         """set the user sex"""
-        self._sex = sex
+        self._gender = gender
 
     def set_left_arm_resistance(self, r: int | float):
         """
@@ -385,7 +385,7 @@ class BIAInput:
 
     def is_male(self):
         """return True if the user is declared as male"""
-        return self.sex == "M"
+        return self.gender == "M"
 
     def is_corrected(self):
         """return true if the electrical data are corrected for orthostaticity"""
@@ -560,9 +560,14 @@ class BIAInput:
         return self._hcm
 
     @property
+    def gender(self):
+        """the user gender"""
+        return self._gender
+
+    @property
     def sex(self):
         """the user sex"""
-        return self._sex
+        return int(1) if self._gender == "M" else int(0)
 
     @property
     def left_arm_resistance(self):
@@ -819,10 +824,10 @@ class Fitness(BIAInput):
 
     def __init__(
         self,
-        age: int | float,
-        sex: Literal["M", "F"],
         height: int,
         weight: int | float,
+        age: int | float,
+        gender: Literal["M", "F", "O"],
         left_arm_resistance: int | float,
         left_arm_reactance: int | float,
         left_trunk_resistance: int | float,
@@ -843,7 +848,7 @@ class Fitness(BIAInput):
     ):
         super().__init__(
             age=age,
-            sex=sex,
+            gender=gender,
             height=height,
             weight=weight,
             left_arm_resistance=left_arm_resistance,
@@ -1237,10 +1242,10 @@ class Standard(Fitness):
 
     def __init__(
         self,
-        age: int | float,
-        sex: Literal["M", "F"],
         height: int,
         weight: int | float,
+        age: int | float,
+        gender: Literal["M", "F", "O"],
         left_arm_resistance: int | float,
         left_arm_reactance: int | float,
         left_trunk_resistance: int | float,
@@ -1261,7 +1266,7 @@ class Standard(Fitness):
     ):
         super().__init__(
             age=age,
-            sex=sex,
+            gender=gender,
             height=height,
             weight=weight,
             left_arm_resistance=left_arm_resistance,
@@ -1601,14 +1606,15 @@ class Standard(Fitness):
 class Inbody(Fitness):
 
     _onnx_model: OnnxModel
-    _model_path = join(dirname(__file__), "assets", "model2_400x4_vs_inbody.onnx")
+    _model_path = join(dirname(__file__), "assets", "model2_100x2_vs_inbody.onnx")
     _preds: dict[str, float]
 
     def __init__(
         self,
-        age: int | float,
         height: int,
         weight: int | float,
+        age: int | float,
+        gender: Literal["M", "F", "O"],
         left_arm_resistance: int | float,
         left_arm_reactance: int | float,
         left_leg_resistance: int | float,
@@ -1624,9 +1630,9 @@ class Inbody(Fitness):
     ):
         super().__init__(
             age=age,
-            sex="M",
             height=height,
             weight=weight,
+            gender=gender,
             left_arm_resistance=left_arm_resistance,
             left_arm_reactance=left_arm_reactance,
             left_leg_resistance=left_leg_resistance,
@@ -1652,6 +1658,7 @@ class Inbody(Fitness):
                 "height",
                 "weight",
                 "age",
+                "sex",
                 "left_arm_resistance",
                 "left_arm_reactance",
                 "left_leg_resistance",
@@ -1825,10 +1832,10 @@ class CheckupBIA:
 
     def __init__(
         self,
-        age: int | float,
-        sex: Literal["M", "F"],
         height: int,
         weight: int | float,
+        age: int | float,
+        gender: Literal["M", "F", "O"],
         left_arm_resistance: int | float,
         left_arm_reactance: int | float,
         left_trunk_resistance: int | float,
@@ -1848,10 +1855,10 @@ class CheckupBIA:
         corrected_electrical_values=False,
     ):
         self._fitness = Fitness(
-            age=age,
-            sex=sex,
             height=height,
             weight=weight,
+            age=age,
+            gender=gender,
             left_arm_resistance=left_arm_resistance,
             left_arm_reactance=left_arm_reactance,
             left_leg_resistance=left_leg_resistance,
@@ -1871,10 +1878,10 @@ class CheckupBIA:
             corrected_electrical_values=corrected_electrical_values,
         )
         self._standard = Standard(
-            age=age,
-            sex=sex,
             height=height,
             weight=weight,
+            age=age,
+            gender=gender,
             left_arm_resistance=left_arm_resistance,
             left_arm_reactance=left_arm_reactance,
             left_leg_resistance=left_leg_resistance,
@@ -1894,9 +1901,10 @@ class CheckupBIA:
             corrected_electrical_values=corrected_electrical_values,
         )
         self._inbody = Inbody(
-            age=age,
             height=height,
             weight=weight,
+            age=age,
+            gender=gender,
             left_arm_resistance=left_arm_resistance,
             left_arm_reactance=left_arm_reactance,
             left_leg_resistance=left_leg_resistance,
