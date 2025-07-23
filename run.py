@@ -4,7 +4,7 @@ import pandas as pd
 from checkupy.checkupy import CheckupBIA
 
 
-def run_bia(params, output_file):
+def run_bia(params, output_file=None):
     bia = CheckupBIA(**params)
     out = []
     for i, v in bia.to_dict().items():
@@ -12,18 +12,21 @@ def run_bia(params, output_file):
         line.index = pd.Index([i])
         out.append(line)
     out = pd.concat(out).T
-    out.to_csv(output_file)
-    print(f"Results saved to {output_file}")
+
+    if output_file:
+        out.to_csv(output_file)
+        print(f"Results saved to {output_file}")
+    else:
+        print("\nBIA Results:\n")
+        print(out.to_string(index=True))
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Run BIA measurement and save results to CSV."
+        description="Run BIA measurement and save or print results."
     )
     parser.add_argument("--json", type=str, help="Path to JSON file with parameters")
-    parser.add_argument(
-        "--output", type=str, default="saved_test.csv", help="Output CSV file name"
-    )
+    parser.add_argument("--output", type=str, help="Output CSV file name (optional)")
 
     # Add individual parameters for command-line input
     parser.add_argument("--height", type=float)
