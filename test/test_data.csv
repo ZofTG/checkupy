@@ -1,8 +1,0 @@
-﻿UserId,Test_date,Test_time,Age,Height,Weight,Gender,Body,Body,Body,Body,Body,Body,Body,Body,Body,Body,Body,Body,Arm,Arm,Arm,Arm,Arm,Arm,Leg,Leg,Leg,Leg,Leg,Leg,Trunk,Trunk,Trunk,Trunk,Trunk,Trunk
-,,,,,,,Left,Left,Left,Right,Right,Right,Upper,Upper,Upper,Lower,Lower,Lower,Left,Left,Left,Right,Right,Right,Left,Left,Left,Right,Right,Right,Left,Left,Left,Right,Right,Right
-,,,,,,,R,X,Ph,R,X,Ph,R,X,Ph,R,X,Ph,R,X,Ph,R,X,Ph,R,X,Ph,R,X,Ph,R,X,Ph,R,X,Ph
-,dd/mm/yyyy,hh:mm:ss,yrs,cm,kg,M/F,Ohm,Ohm,deg,Ohm,Ohm,deg,Ohm,Ohm,deg,Ohm,Ohm,deg,Ohm,Ohm,deg,Ohm,Ohm,deg,Ohm,Ohm,deg,Ohm,Ohm,deg,Ohm,Ohm,deg,Ohm,Ohm,deg
-1793c0a2-02c8-4ceb-8407-a8b53ec65eee,10/07/2024,12:06:52,39,175,75.21,M,594.2,50.5,4.9,591.6,51.4,5.1,637.4,53,4.7,503.2,45.2,4.8,322.6,20.8,3.6,318.1,22,3.9,251.4,18.1,3.7,252.1,18.6,3.8,13.2,5.3,28.3,13.3,5.1,28.4
-1793c0a2-02c8-4ceb-8407-a8b53ec65eee,10/07/2024,17:26:57,39,175,75.11,M,594.4,51.2,5,597.5,53.1,5.2,640.3,53.3,4.7,508.5,45.1,4.8,320.4,22.8,3.9,322.2,24.8,4.3,255,17.3,3.5,256,17.8,3.6,12.9,5.3,28.6,13.1,5.2,28.7
-87723b00-751e-48ed-80ee-b56b25d068c7,10/07/2024,17:30:39,39,173,75.04,M,529.7,51.3,5.6,525.8,52.2,5.8,575.3,58.3,5.7,439,41.4,5,294.1,27.1,5,283.6,26.2,5.2,216.8,15.9,3.7,223.1,17.8,4.1,11.8,6.2,30.4,11.9,6,31
-87723b00-751e-48ed-80ee-b56b25d068c7,10/07/2024,17:59:55,39,173,75.01,M,527.1,50.8,5.6,527.3,52.4,5.8,570.8,58,5.7,440,41.1,4.9,288.9,26.5,5,285.2,26.6,5.3,218.7,15.6,3.6,222.5,17.7,4.1,11.7,6.2,30.6,11.8,6,31.2
