@@ -29,7 +29,7 @@ def main():
     parser.add_argument("--output", type=str, help="Output CSV file name (optional)")
 
     # Add individual parameters for command-line input
-    parser.add_argument("--height", type=float)
+    parser.add_argument("--height", type=int)
     parser.add_argument("--weight", type=float)
     parser.add_argument("--age", type=int)
     parser.add_argument("--gender", type=str)

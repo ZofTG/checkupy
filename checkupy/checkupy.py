@@ -9,6 +9,8 @@ from typing import Literal
 from .onnx_models import OnnxModel
 import numpy as np
 from os.path import join, dirname
+import pandas as pd
+import json
 
 __all__ = ["CheckupBIA"]
 
